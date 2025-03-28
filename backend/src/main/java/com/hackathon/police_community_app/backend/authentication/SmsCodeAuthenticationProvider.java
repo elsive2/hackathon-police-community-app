@@ -41,8 +41,8 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
         User user = userRepository.findByPhoneNumber(phoneNumber)
                 .orElseGet(() -> {
                     User newUser = new User();
-                    newUser.setPhoneNumber(phoneNumber);
-                    newUser.setRole(Role.ROLE_CITIZEN);
+                    newUser.setPhoneNumber(phoneNumber)
+                            .setRole(Role.ROLE_CITIZEN);
                     return userRepository.save(newUser);
                 });
 

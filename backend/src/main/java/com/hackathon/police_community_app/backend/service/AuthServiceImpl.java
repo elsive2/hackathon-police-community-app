@@ -2,6 +2,7 @@ package com.hackathon.police_community_app.backend.service;
 
 import com.hackathon.police_community_app.backend.authentication.SmsCodeAuthenticationToken;
 import com.hackathon.police_community_app.backend.entity.SmsCode;
+import com.hackathon.police_community_app.backend.entity.User;
 import com.hackathon.police_community_app.backend.enums.Role;
 import com.hackathon.police_community_app.backend.repository.SmsCodeRepository;
 import com.hackathon.police_community_app.backend.repository.UserRepository;
@@ -11,16 +12,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
+@Transactional
 @Service
 @AllArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private final SmsCodeRepository smsCodeRepository;
-
-    private final UserRepository userRepository;
 
     private final SmsService smsService;
 
@@ -31,13 +33,20 @@ public class AuthServiceImpl implements AuthService {
     public void requestCode(String phoneNumber) {
 //        String code = String.format("%06d", new Random().nextInt(999999));
         String code = "999999";
-        SmsCode smsCode = new SmsCode();
-        smsCode.setPhoneNumber(phoneNumber)
-                .setCode(code)
-                .setExpiresAt(LocalDateTime.now().plusMinutes(5));
 
-        smsCodeRepository.save(smsCode);
+        Optional<SmsCode> smsCode = smsCodeRepository.findByPhoneNumberAndCodeOptional(phoneNumber, code);
 
+        if (smsCode.isEmpty()) {
+            SmsCode newSmsCode = new SmsCode();
+            newSmsCode.setPhoneNumber(phoneNumber)
+                    .setCode(code)
+                    .setExpiresAt(LocalDateTime.now().plusMinutes(5));
+
+            smsCodeRepository.save(newSmsCode);
+        } else {
+            smsCode.get().setExpiresAt(LocalDateTime.now().plusMinutes(5));
+        }
+        // @TODO: Отправку СМС
 //        smsService.sendSms(phoneNumber, code);
     }
 
@@ -52,25 +61,4 @@ public class AuthServiceImpl implements AuthService {
         String role = authResult.getAuthorities().iterator().next().getAuthority();
         return jwtUtil.generateToken(userId, phoneNumber, Role.valueOf(role));
     }
-
-    @Override
-    public UserDetails getByPhone(String phone) {
-        return userRepository.findByPhoneNumberRequired(phone);
-    }
-
-//    public String loginPolice(String phoneNumber, String password) {
-//        User user = userRepository.findByPhoneNumber(phoneNumber)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        if (!user.getRole().equals(Role.ROLE_POLICE)) {
-//            throw new RuntimeException("User is not a police officer");
-//        }
-//
-//        if (!passwordEncoder.matches(password, user.getPasswordHash())) {
-//            throw new RuntimeException("Invalid password");
-//        }
-//
-//        // Генерируем JWT-токен
-//        return jwtUtil.generateToken(user.getId(), user.getRole().name());
-//    }
 }
