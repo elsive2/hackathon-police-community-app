@@ -13,7 +13,7 @@ const SosTable = ({ data }: {data: SOSInterface[]}) => {
             <TableCell align="center">Телефон</TableCell>
             <TableCell align="center">Дата</TableCell>
             <TableCell align="center">Статус</TableCell>
-            <TableCell align="center">Кнопки</TableCell>
+            <TableCell align="center"></TableCell>
           </TableRow>
           {data.map((row, index) => {
             return (
