@@ -1,6 +1,7 @@
 import { getStatus } from "@/modules/sos/utils/get-status";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import { SOSInterface } from "@/modules/sos/interfaces";
+import { SosStatusEnum } from "@/modules/sos/interfaces";
 
 const SosTable = ({ data }: {data: SOSInterface[]}) => {
     return (
@@ -24,7 +25,7 @@ const SosTable = ({ data }: {data: SOSInterface[]}) => {
                 <TableCell align="center">{row.phone}</TableCell>
                 <TableCell align="center">{row.date}</TableCell>
                 <TableCell align="center">{getStatus(row.status)}</TableCell>
-                <TableCell align="center" ><Button variant="outlined">Принять</Button></TableCell>
+                <TableCell align="center" >{row.status === SosStatusEnum.new && <Button variant="outlined">Принять</Button>}</TableCell>
               </TableRow>
             );
           })}
