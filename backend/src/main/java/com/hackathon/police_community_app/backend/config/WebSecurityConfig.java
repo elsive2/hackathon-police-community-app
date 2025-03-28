@@ -46,6 +46,7 @@ public class WebSecurityConfig {
                 }))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/context/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/sos-alerts").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**", "/actuator/**").permitAll()
                         .requestMatchers("/api/**").authenticated()

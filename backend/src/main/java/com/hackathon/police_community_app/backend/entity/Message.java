@@ -1,6 +1,5 @@
 package com.hackathon.police_community_app.backend.entity;
 
-import com.hackathon.police_community_app.backend.enums.MessageStatus;
 import com.hackathon.police_community_app.backend.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;

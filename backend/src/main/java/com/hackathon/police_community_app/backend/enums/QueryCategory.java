@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum MessageCategory {
+public enum QueryCategory {
     ASSAULT("Нападение", Priority.CRITICAL),
     ROBBERY("Грабеж", Priority.CRITICAL),
     DOMESTIC_VIOLENCE("Домашнее насилие", Priority.CRITICAL),

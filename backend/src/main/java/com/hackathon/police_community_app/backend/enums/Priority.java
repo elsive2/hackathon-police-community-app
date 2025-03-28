@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-enum Priority {
+public enum Priority {
     CRITICAL(4),
     HIGH(3),
     MEDIUM(2),
