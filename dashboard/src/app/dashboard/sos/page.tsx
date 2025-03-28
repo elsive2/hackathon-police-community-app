@@ -23,6 +23,7 @@ const SosPage = () => {
     <div>
       {data.map(({ id, phone, status }) => (
         <div key={id}>
+          <div>{id}</div>
           <div>{phone}</div>
           <div>{getStatus(status)}</div>
         </div>
