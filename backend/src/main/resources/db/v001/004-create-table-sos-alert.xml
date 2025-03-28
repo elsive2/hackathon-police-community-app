@@ -1,0 +1,46 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create-table-sos-alert" author="Maxim">
+        <createTable tableName="sos_alert">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="latitude" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="longitude" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="phone_number" type="varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+
+            <!-- base entity fields -->
+            <column name="is_deleted" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="change_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="idx_sos_alert_phone_number"
+                     schemaName="public"
+                     tableName="sos_alert">
+            <column name="phone_number"/>
+        </createIndex>
+
+        <createIndex indexName="idx_sos_alert_create_date"
+                     schemaName="public"
+                     tableName="sos_alert">
+            <column name="create_date"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
