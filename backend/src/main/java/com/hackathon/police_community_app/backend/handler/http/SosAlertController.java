@@ -1,22 +1,30 @@
 package com.hackathon.police_community_app.backend.handler.http;
 
+import com.hackathon.police_community_app.backend.authentication.SmsCodeAuthenticationToken;
 import com.hackathon.police_community_app.backend.dto.request.SosAlertRequest;
 import com.hackathon.police_community_app.backend.dto.response.PagedResponse;
 import com.hackathon.police_community_app.backend.dto.response.SingleMessageResponse;
 import com.hackathon.police_community_app.backend.dto.response.SosAlertResponse;
 import com.hackathon.police_community_app.backend.service.SosAlertService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/sos-alert")
+import java.security.Principal;
+import java.util.Objects;
+
+@Tag(name = "Sos Alert", description = "Sos Alert")
+@RequestMapping("/api/sos-alerts")
 @AllArgsConstructor
 @RestController
 public class SosAlertController {
     private final SosAlertService service;
 
+    @Operation(summary = "Получение всех SOS-алертов")
     @GetMapping
     @PreAuthorize("hasRole('POLICE')")
     public PagedResponse<SosAlertResponse> getAll(
@@ -25,7 +33,8 @@ public class SosAlertController {
         return service.getAllSosAlerts(page, size);
     }
 
-    @GetMapping("/{phoneNumber}")
+    @Operation(summary = "Получение всех SOS-алертов по номеру телефона")
+    @GetMapping("/phone/{phoneNumber}")
     @PreAuthorize("hasRole('POLICE')")
     public PagedResponse<SosAlertResponse> getAllByPhoneNumber(
             @RequestParam(defaultValue = "1") int page,
@@ -34,19 +43,25 @@ public class SosAlertController {
         return service.getAllByPhoneNumber(phoneNumber, page, size);
     }
 
+    @Operation(summary = "Получение SOS-алерта по идентификатору")
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('POLICE')")
     public SosAlertResponse getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
+    @Operation(summary = "Сохранение SOS-алерта")
     @PostMapping
-    public ResponseEntity<SosAlertResponse> createSosAlert(@RequestBody SosAlertRequest request) {
-        SosAlertResponse response = service.create(request);
+    public ResponseEntity<SosAlertResponse> createSosAlert(@RequestBody SosAlertRequest request, Principal principal) {
+        SmsCodeAuthenticationToken authentication = (SmsCodeAuthenticationToken) principal;
+        String phone = Objects.isNull(authentication) ? null : authentication.getPhoneNumber();
+
+        SosAlertResponse response = service.create(request, phone);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @Operation(summary = "Обновление SOS-алерта")
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('POLICE')")
     public SosAlertResponse update(
@@ -56,12 +71,14 @@ public class SosAlertController {
         return service.update(id, request);
     }
 
+    @Operation(summary = "Удаление SOS-алерта")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('POLICE')")
     public void deleteSosAlert(@PathVariable Long id) {
         service.delete(id);
     }
 
+    @Operation(summary = "Обновить статус до завершения SOS-алерта")
     @PutMapping("/{id}/finish")
     @PreAuthorize("hasRole('POLICE')")
     public SingleMessageResponse finish(@PathVariable Long id) {
@@ -70,6 +87,7 @@ public class SosAlertController {
         return new SingleMessageResponse("Status updated");
     }
 
+    @Operation(summary = "Обновить статус до отклонения SOS-алерта")
     @PutMapping("/{id}/reject")
     @PreAuthorize("hasRole('POLICE')")
     public SingleMessageResponse reject(@PathVariable Long id) {
@@ -78,13 +96,16 @@ public class SosAlertController {
         return new SingleMessageResponse("Status updated");
     }
 
-    @PatchMapping("/{id}/assign/{userId}")
+    @Operation(summary = "Назначение авторизованного пользователя как ответственного за SOS-алерта")
+    @PutMapping("/{id}/assign")
     @PreAuthorize("hasRole('POLICE')")
     public SingleMessageResponse assignResponsible(
             @PathVariable Long id,
-            @PathVariable Long userId
+            Principal principal
     ) {
-        service.assignResponsible(id, userId);
+        SmsCodeAuthenticationToken authentication = (SmsCodeAuthenticationToken) principal;
+
+        service.assignResponsible(id, authentication.getUserId());
 
         return new SingleMessageResponse("Assigned responsible");
     }

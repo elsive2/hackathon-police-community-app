@@ -89,7 +89,7 @@ public class JwtUtil {
 
     public Long getIdFromToken(String token) {
         Claims claims = getAllClaimsFromToken(token);
-        return (Long) claims.get("id");
+        return ((Integer) claims.get("id")).longValue();
     }
 
     public String getRoleFromToken(String token) {

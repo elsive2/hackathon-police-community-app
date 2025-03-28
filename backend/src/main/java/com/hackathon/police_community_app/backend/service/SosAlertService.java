@@ -9,7 +9,7 @@ public interface SosAlertService {
 
     PagedResponse<SosAlertResponse> getAllSosAlerts(int page, int size);
 
-    SosAlertResponse create(SosAlertRequest request);
+    SosAlertResponse create(SosAlertRequest request, String phone);
 
     SosAlertResponse update(Long id, SosAlertRequest request);
 

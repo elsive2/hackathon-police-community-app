@@ -10,6 +10,7 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
     @Getter
     private final String phoneNumber;
     private final String code;
+    @Getter
     private final Long userId;
 
     public SmsCodeAuthenticationToken(String phoneNumber, String code) {
@@ -20,9 +21,9 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
         setAuthenticated(false);
     }
 
-    public SmsCodeAuthenticationToken(Long userId, Collection<? extends GrantedAuthority> authorities) {
+    public SmsCodeAuthenticationToken(Long userId, String phoneNumber, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
-        this.phoneNumber = null;
+        this.phoneNumber = phoneNumber;
         this.code = null;
         this.userId = userId;
         setAuthenticated(true);

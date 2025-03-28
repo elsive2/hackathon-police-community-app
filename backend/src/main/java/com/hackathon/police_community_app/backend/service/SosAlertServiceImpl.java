@@ -33,7 +33,7 @@ public class SosAlertServiceImpl implements SosAlertService {
     private final UserRepository userRepository;
 
     public PagedResponse<SosAlertResponse> getAllSosAlerts(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page - 1, size);
 
         Page<SosAlert> sosAlertPage = sosAlertRepository.findAll(pageable);
 
@@ -42,7 +42,7 @@ public class SosAlertServiceImpl implements SosAlertService {
 
     @Override
     public PagedResponse<SosAlertResponse> getAllByPhoneNumber(String phoneNumber, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page - 1, size);
         Page<SosAlert> sosAlertPage = sosAlertRepository.findByPhone(phoneNumber, pageable);
 
         return getPagedResponse(sosAlertPage);
@@ -56,11 +56,12 @@ public class SosAlertServiceImpl implements SosAlertService {
     }
 
     @Override
-    public SosAlertResponse create(SosAlertRequest request) {
+    public SosAlertResponse create(SosAlertRequest request, String phone) {
+        // @TODO: валидация телефона
         SosAlert sosAlert = new SosAlert();
-        sosAlert.setPhoneNumber(request.getPhoneNumber())
-                .setLatitude(request.getLatitude())
+        sosAlert.setLatitude(request.getLatitude())
                 .setLongitude(request.getLongitude())
+                .setPhoneNumber(phone)
                 .setStatus(Status.NEW);
 
         sosAlert = sosAlertRepository.save(sosAlert);
@@ -73,9 +74,7 @@ public class SosAlertServiceImpl implements SosAlertService {
         SosAlert sosAlert = sosAlertRepository.findByIdRequired(id);
 
         sosAlert.setLatitude(request.getLatitude())
-                .setLongitude(request.getLongitude())
-                .setPhoneNumber(request.getPhoneNumber())
-                .setStatus(Status.valueOf(request.getStatus()));
+                .setLongitude(request.getLongitude());
 
         return mapper.toResponse(sosAlert);
     }

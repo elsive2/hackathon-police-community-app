@@ -48,6 +48,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
 
         return new SmsCodeAuthenticationToken(
                 user.getId(),
+                user.getPhoneNumber(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()))
         );
     }

@@ -52,6 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 if (jwtUtil.isValidToken(token)) {
                     var authenticationToken = new SmsCodeAuthenticationToken(
                             jwtUtil.getIdFromToken(token),
+                            phone,
                             Collections.singletonList(new SimpleGrantedAuthority(jwtUtil.getRoleFromToken(token)))
                     );
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
