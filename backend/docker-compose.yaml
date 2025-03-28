@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: police_community_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/postresql/data:/var/lib/postgresql/data
