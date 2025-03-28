@@ -1,11 +1,17 @@
 package com.hackathon.police_community_app.backend.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@MappedSuperclass
+@Getter
+@Setter
 public class BaseEntity {
     @Column(name = "is_deleted", nullable = false)
     protected Boolean isDeleted = false;

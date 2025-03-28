@@ -5,15 +5,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SmsServiceImpl implements SmsService {
-    @Value("${twilio.account.sid}")
-    private String accountSid;
-
-    @Value("${twilio.auth.token}")
-    private String authToken;
-
-    @Value("${twilio.phone.number}")
-    private String twilioPhoneNumber;
-
+//    @Value("${twilio.account.sid}")
+//    private String accountSid;
+//
+//    @Value("${twilio.auth.token}")
+//    private String authToken;
+//
+//    @Value("${twilio.phone.number}")
+//    private String twilioPhoneNumber;
+//
     public void sendSms(String toPhoneNumber, String code) {
 //        Twilio.init(accountSid, authToken);
 //        String messageBody = "Ваш код для входа: " + code;

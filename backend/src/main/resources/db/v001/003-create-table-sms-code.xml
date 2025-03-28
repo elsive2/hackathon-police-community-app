@@ -4,21 +4,22 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="create_table_users" author="Maxim">
-        <createTable tableName="users">
+    <changeSet id="create-table-sms-code" author="Maxim">
+        <createTable tableName="sms_code">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="phone_number" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="password_hash" type="varchar(100)">
-                <constraints nullable="true"/>
+            <column name="code" type="varchar(6)">
+                <constraints nullable="false"/>
             </column>
-            <column name="role" type="varchar(20)">
+            <column name="expires_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
 
+            <!-- base entity fields -->
             <column name="is_deleted" type="boolean">
                 <constraints nullable="false"/>
             </column>
@@ -30,17 +31,25 @@
             </column>
         </createTable>
 
-        <createIndex indexName="idx_unique_user_phone_number"
+        <!-- Индекс для phone_number -->
+        <createIndex indexName="idx_sms_code_phone_number"
                      schemaName="public"
-                     tableName="users"
-                     unique="true">
+                     tableName="sms_code">
             <column name="phone_number"/>
         </createIndex>
 
-        <createIndex indexName="idx_user_role"
+        <!-- Индекс для code -->
+        <createIndex indexName="idx_sms_code_code"
                      schemaName="public"
-                     tableName="users">
-            <column name="role"/>
+                     tableName="sms_code">
+            <column name="code"/>
+        </createIndex>
+
+        <!-- Индекс для expires_at -->
+        <createIndex indexName="idx_sms_code_expires_at"
+                     schemaName="public"
+                     tableName="sms_code">
+            <column name="expires_at"/>
         </createIndex>
     </changeSet>
 

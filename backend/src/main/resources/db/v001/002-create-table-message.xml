@@ -10,7 +10,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_message_user" references="user(id)"/>
+                <constraints nullable="false" foreignKeyName="fk_message_user" references="users(id)"/>
             </column>
             <column name="content" type="varchar(500)">
                 <constraints nullable="false"/>

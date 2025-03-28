@@ -3,6 +3,7 @@ package com.hackathon.police_community_app.backend.handler.http;
 import com.hackathon.police_community_app.backend.dto.request.PhoneRequest;
 import com.hackathon.police_community_app.backend.dto.request.VerifyCodeRequest;
 import com.hackathon.police_community_app.backend.dto.response.AuthResponse;
+import com.hackathon.police_community_app.backend.dto.response.SingleMessageResponse;
 import com.hackathon.police_community_app.backend.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,9 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/request-code")
-    public ResponseEntity<String> requestCode(@RequestBody PhoneRequest request) {
+    public SingleMessageResponse requestCode(@RequestBody PhoneRequest request) {
         authService.requestCode(request.getPhone());
-        return ResponseEntity.ok("SMS code sent");
+        return new SingleMessageResponse("Code has been sent");
     }
 
     @PostMapping("/verify-code")

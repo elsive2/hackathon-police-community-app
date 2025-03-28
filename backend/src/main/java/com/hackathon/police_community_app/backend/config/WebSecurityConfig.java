@@ -5,6 +5,7 @@ import com.hackathon.police_community_app.backend.filter.JwtAuthenticationFilter
 import com.hackathon.police_community_app.backend.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -24,6 +25,7 @@ import java.util.List;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @AllArgsConstructor
+@Configuration
 public class WebSecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final SmsCodeAuthenticationProvider smsCodeAuthenticationProvider;

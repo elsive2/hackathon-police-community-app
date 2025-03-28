@@ -1,24 +1,18 @@
 package com.hackathon.police_community_app.backend.util;
 
+import com.hackathon.police_community_app.backend.entity.User;
+import com.hackathon.police_community_app.backend.enums.Role;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
 import java.security.Key;
-import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -44,7 +38,7 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public String getUsernameFromToken(String token) {
+    public String getSubjectFromToken(String token) {
         return getAllClaimsFromToken(token).getSubject();
     }
 
@@ -52,20 +46,27 @@ public class JwtUtil {
         return getAllClaimsFromToken(token).getExpiration();
     }
 
+    public UserDetails extractUserInfo(String token) {
+        Claims claims = getAllClaimsFromToken(token);
+
+        User user = new User();
+        user.setId((Long) claims.get("id"))
+                .setRole(Role.valueOf((String) claims.get("role")))
+                .setPhoneNumber(claims.getSubject());
+
+        return user;
+    }
+
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
 
-    public String generateToken(UserDetails user) {
-        List<String> authorities = user.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
-
+    public String generateToken(Long id, String phone, Role role) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", authorities);
-        return doGenerateToken(claims, user.getUsername());
+        claims.put("id", id);
+        claims.put("role", role.name());
+        return doGenerateToken(claims, phone);
     }
 
     private String doGenerateToken(Map<String, Object> claims, String username) {
@@ -82,8 +83,18 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Boolean validateToken(String token) {
+    public Boolean isValidToken(String token) {
         return !isTokenExpired(token);
+    }
+
+    public Long getIdFromToken(String token) {
+        Claims claims = getAllClaimsFromToken(token);
+        return (Long) claims.get("id");
+    }
+
+    public String getRoleFromToken(String token) {
+        Claims claims = getAllClaimsFromToken(token);
+        return (String) claims.get("role");
     }
 }
 

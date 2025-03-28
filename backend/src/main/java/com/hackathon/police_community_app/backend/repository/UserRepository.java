@@ -14,9 +14,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
         return findByPhoneNumber(phoneNumber);
     }
 
-    Optional<User> findByUsername(String username);
-
-    default UserDetails findByUsernameRequired(String username) {
-        return findByUsername(username).orElseThrow(UserNotFoundException::new);
+    default UserDetails findByPhoneNumberRequired(String phoneNumber) {
+        return findByPhoneNumber(phoneNumber).orElseThrow(UserNotFoundException::new);
     }
 }

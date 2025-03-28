@@ -31,7 +31,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
         String phoneNumber = smsAuth.getPhoneNumber();
         String code = (String) smsAuth.getCredentials();
 
-        SmsCode smsCode = smsCodeRepository.findByPhoneNumberAndCode(phoneNumber, code)
+        SmsCode smsCode = smsCodeRepository.findByPhoneNumberAndCodeOptional(phoneNumber, code)
                 .orElseThrow(InvalidSmsCodeException::new);
 
         if (smsCode.getExpiresAt().isBefore(LocalDateTime.now())) {

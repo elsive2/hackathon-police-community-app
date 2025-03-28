@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @Entity
-@Table
+@Table(name = "users")
 @Data
 public class User extends BaseEntity implements UserDetails {
     @Id
