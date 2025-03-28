@@ -38,7 +38,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
             throw new SmsCodeExpiredException();
         }
 
-        User user = userRepository.findByPhoneNumber(phoneNumber)
+        User user = userRepository.findByPhoneNumberAndIsDeletedFalse(phoneNumber)
                 .orElseGet(() -> {
                     User newUser = new User();
                     newUser.setPhoneNumber(phoneNumber)

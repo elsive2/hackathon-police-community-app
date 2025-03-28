@@ -1,6 +1,7 @@
 package com.hackathon.police_community_app.backend.entity;
 
 import com.hackathon.police_community_app.backend.enums.MessageStatus;
+import com.hackathon.police_community_app.backend.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -31,7 +32,7 @@ public class Message extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private MessageStatus status;
+    private Status status;
 
     @Column(nullable = false, length = 50)
     private String category;

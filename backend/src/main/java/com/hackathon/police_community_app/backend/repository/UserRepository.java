@@ -3,20 +3,25 @@ package com.hackathon.police_community_app.backend.repository;
 import com.hackathon.police_community_app.backend.entity.User;
 import com.hackathon.police_community_app.backend.exception.UserNotFoundException;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
-    Optional<User> findByPhoneNumber(String phoneNumber);
+    Optional<User> findByPhoneNumberAndIsDeletedFalse(String phoneNumber);
 
     default Optional<User> findByPhoneNumberOptional(String phoneNumber) {
-        return findByPhoneNumber(phoneNumber);
+        return findByPhoneNumberAndIsDeletedFalse(phoneNumber);
     }
 
     default User findByPhoneNumberRequired(String phoneNumber) {
-        return findByPhoneNumber(phoneNumber).orElseThrow(UserNotFoundException::new);
+        return findByPhoneNumberAndIsDeletedFalse(phoneNumber).orElseThrow(UserNotFoundException::new);
+    }
+
+    Optional<User> findByIsDeletedFalseAndId(Long userId);
+
+    default User findByIdRequired(Long userId) {
+        return findByIsDeletedFalseAndId(userId).orElseThrow(UserNotFoundException::new);
     }
 }

@@ -9,4 +9,6 @@ public class SosAlertRequest {
     private Double longitude;
 
     private String phoneNumber;
+
+    private String status;
 }

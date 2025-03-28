@@ -2,6 +2,7 @@ package com.hackathon.police_community_app.backend.handler.http;
 
 import com.hackathon.police_community_app.backend.dto.request.SosAlertRequest;
 import com.hackathon.police_community_app.backend.dto.response.PagedResponse;
+import com.hackathon.police_community_app.backend.dto.response.SingleMessageResponse;
 import com.hackathon.police_community_app.backend.dto.response.SosAlertResponse;
 import com.hackathon.police_community_app.backend.service.SosAlertService;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ public class SosAlertController {
     private final SosAlertService service;
 
     @GetMapping
+    @PreAuthorize("hasRole('POLICE')")
     public PagedResponse<SosAlertResponse> getAll(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -24,6 +26,7 @@ public class SosAlertController {
     }
 
     @GetMapping("/{phoneNumber}")
+    @PreAuthorize("hasRole('POLICE')")
     public PagedResponse<SosAlertResponse> getAllByPhoneNumber(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -32,12 +35,12 @@ public class SosAlertController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('POLICE')")
     public SosAlertResponse getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('CITIZEN')")
     public ResponseEntity<SosAlertResponse> createSosAlert(@RequestBody SosAlertRequest request) {
         SosAlertResponse response = service.create(request);
 
@@ -45,16 +48,46 @@ public class SosAlertController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('CITIZEN')")
-    public SosAlertResponse updateSosAlert(
+    @PreAuthorize("hasRole('POLICE')")
+    public SosAlertResponse update(
             @PathVariable Long id,
             @RequestBody SosAlertRequest request) {
+        // @TODO: Сделать чтобы был ответсвенный пользователь
         return service.update(id, request);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('CITIZEN')")
+    @PreAuthorize("hasRole('POLICE')")
     public void deleteSosAlert(@PathVariable Long id) {
         service.delete(id);
     }
+
+    @PutMapping("/{id}/finish")
+    @PreAuthorize("hasRole('POLICE')")
+    public SingleMessageResponse finish(@PathVariable Long id) {
+        service.finish(id);
+
+        return new SingleMessageResponse("Status updated");
+    }
+
+    @PutMapping("/{id}/reject")
+    @PreAuthorize("hasRole('POLICE')")
+    public SingleMessageResponse reject(@PathVariable Long id) {
+        service.reject(id);
+
+        return new SingleMessageResponse("Status updated");
+    }
+
+    @PatchMapping("/{id}/assign/{userId}")
+    @PreAuthorize("hasRole('POLICE')")
+    public SingleMessageResponse assignResponsible(
+            @PathVariable Long id,
+            @PathVariable Long userId
+    ) {
+        service.assignResponsible(id, userId);
+
+        return new SingleMessageResponse("Assigned responsible");
+    }
+
+    // @TODO: Валидация
 }

@@ -1,5 +1,6 @@
 package com.hackathon.police_community_app.backend.entity;
 
+import com.hackathon.police_community_app.backend.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,4 +20,12 @@ public class SosAlert extends BaseEntity {
 
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true)
+    private User responsible;
 }

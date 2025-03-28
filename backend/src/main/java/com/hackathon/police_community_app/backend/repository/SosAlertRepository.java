@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface SosAlertRepository extends CrudRepository<SosAlert, Long> {
     Page<SosAlert> findByIsDeletedFalseOrderByCreateDateDesc(Pageable pageable);
@@ -21,7 +23,9 @@ public interface SosAlertRepository extends CrudRepository<SosAlert, Long> {
         return findByPhoneNumberAndIsDeletedFalseOrderByCreateDateDesc(phoneNumber, pageable);
     }
 
+    Optional<SosAlert> findByIdAndIsDeletedFalse(Long id);
+
     default SosAlert findByIdRequired(Long id) {
-        return findById(id).orElseThrow(SosAlertNotFoundException::new);
+        return findByIdAndIsDeletedFalse(id).orElseThrow(SosAlertNotFoundException::new);
     }
 }

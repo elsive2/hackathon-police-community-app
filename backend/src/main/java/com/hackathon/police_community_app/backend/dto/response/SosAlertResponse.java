@@ -1,5 +1,6 @@
 package com.hackathon.police_community_app.backend.dto.response;
 
+import com.hackathon.police_community_app.backend.enums.Status;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,11 @@ public class SosAlertResponse {
 
     private String phoneNumber;
 
+    private Status status;
+
     private LocalDateTime createDate;
 
     private LocalDateTime changeDate;
+
+    private RightsResponse rightsResponse;
 }

@@ -16,4 +16,10 @@ public interface SosAlertService {
     void delete(Long id);
 
     SosAlertResponse getById(Long id);
+
+    void finish(Long id);
+
+    void assignResponsible(Long id, Long userId);
+
+    void reject(Long id);
 }
