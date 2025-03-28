@@ -4,7 +4,7 @@ import { SOSInterface } from "@/modules/sos/interfaces";
 import { useEffect, useState } from "react";
 import { sosData } from "@/modules/sos/mock";
 import { getStatus } from "@/modules/sos/utils/get-status";
-import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
+import { Button, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 
 const SosPage = () => {
   const [data, setData] = useState<SOSInterface[]>([]);
@@ -24,26 +24,24 @@ const SosPage = () => {
     <TableContainer component={Paper}>
       <Table>
         <TableBody>
+        <TableRow>
+            <TableCell align="left">Местоположение</TableCell>
+            <TableCell align="center">Телефон</TableCell>
+            <TableCell align="center">Дата</TableCell>
+            <TableCell align="center">Статус</TableCell>
+            <TableCell align="center">Кнопки</TableCell>
+          </TableRow>
           {data.map((row, index) => {
-            const labelId = index;
-
             return (
               <TableRow
-                hover
-                role="checkbox"
                 key={row.id}
                 sx={{ cursor: "pointer" }}
               >
-                <TableCell
-                  component="th"
-                  scope="row"
-                  padding="none"
-                >
-                  {row.location}
-                </TableCell>
-                <TableCell align="right">{row.phone}</TableCell>
-                <TableCell align="right">{row.date}</TableCell>
-                <TableCell align="right">{row.status}</TableCell>
+                <TableCell align="left">{row.location}</TableCell>
+                <TableCell align="center">{row.phone}</TableCell>
+                <TableCell align="center">{row.date}</TableCell>
+                <TableCell align="center">{getStatus(row.status)}</TableCell>
+                <TableCell align="center" ><Button variant="outlined">Принять</Button></TableCell>
               </TableRow>
             );
           })}
