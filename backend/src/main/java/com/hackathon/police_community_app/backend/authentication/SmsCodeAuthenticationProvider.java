@@ -42,7 +42,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
                 .orElseGet(() -> {
                     User newUser = new User();
                     newUser.setPhoneNumber(phoneNumber)
-                            .setRole(Role.ROLE_CITIZEN);
+                            .setRole(Role.ROLE_ADMIN);
                     return userRepository.save(newUser);
                 });
 
