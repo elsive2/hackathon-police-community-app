@@ -2,15 +2,13 @@ package com.hackathon.police_community_app.backend.service;
 
 import com.hackathon.police_community_app.backend.authentication.SmsCodeAuthenticationToken;
 import com.hackathon.police_community_app.backend.entity.SmsCode;
-import com.hackathon.police_community_app.backend.entity.User;
 import com.hackathon.police_community_app.backend.enums.Role;
 import com.hackathon.police_community_app.backend.repository.SmsCodeRepository;
-import com.hackathon.police_community_app.backend.repository.UserRepository;
 import com.hackathon.police_community_app.backend.util.JwtUtil;
+import com.hackathon.police_community_app.backend.util.StringUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
     public void requestCode(String phoneNumber) {
 //        String code = String.format("%06d", new Random().nextInt(999999));
         String code = "999999";
+        phoneNumber = StringUtil.formatPhoneNumber(phoneNumber);
 
         Optional<SmsCode> smsCode = smsCodeRepository.findByPhoneNumberAndCodeOptional(phoneNumber, code);
 
@@ -51,6 +50,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     public String verifyCode(String phoneNumber, String code) {
+        phoneNumber = StringUtil.formatPhoneNumber(phoneNumber);
         SmsCodeAuthenticationToken authRequest = new SmsCodeAuthenticationToken(phoneNumber, code);
 
         SmsCodeAuthenticationToken authResult = (SmsCodeAuthenticationToken) authenticationManager.authenticate(authRequest);

@@ -1,4 +1,4 @@
-import { getStatus } from "@/modules/sos/utils/get-status";
+import { getStatus } from "@/modules/sos/utils/getStatus";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import { SOSInterface } from "@/modules/sos/interfaces";
 import { SosStatusEnum } from "@/modules/sos/interfaces";

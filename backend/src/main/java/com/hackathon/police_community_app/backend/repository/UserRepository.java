@@ -24,4 +24,8 @@ public interface UserRepository extends CrudRepository<User, Long> {
     default User findByIdRequired(Long userId) {
         return findByIsDeletedFalseAndId(userId).orElseThrow(UserNotFoundException::new);
     }
+
+    default Optional<User> findByIdOptional(Long userId) {
+        return findByIsDeletedFalseAndId(userId);
+    }
 }

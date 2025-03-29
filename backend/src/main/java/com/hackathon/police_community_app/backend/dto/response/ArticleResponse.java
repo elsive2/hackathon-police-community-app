@@ -9,7 +9,7 @@ public class ArticleResponse {
     private Long id;
     private String title;
     private String content;
-    private Boolean isEditable;
+    private Boolean editable;
     private LocalDateTime creationDate;
     private LocalDateTime changeDate;
     private UserResponse author;
