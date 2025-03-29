@@ -3,7 +3,8 @@
 import { SOSInterface } from "@/modules/sos/interfaces";
 import { useEffect, useState } from "react";
 import { sosData } from "@/modules/sos/mock";
-import { getStatus } from "@/modules/sos/utils/get-status";
+import SosTable from "@/modules/sos/components/SosTable";
+import SkeletonTable from "@/modules/sos/components/SkeletonTable";
 
 const SosPage = () => {
   const [data, setData] = useState<SOSInterface[]>([]);
@@ -17,17 +18,10 @@ const SosPage = () => {
     }, 1500);
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div><SkeletonTable /></div>;
 
   return (
-    <div>
-      {data.map(({ id, phone, status }) => (
-        <div key={id}>
-          <div>{phone}</div>
-          <div>{getStatus(status)}</div>
-        </div>
-      ))}
-    </div>
+    <SosTable data={data}/>
   );
 };
 
