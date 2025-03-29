@@ -1,6 +1,13 @@
 version: '3.8'
 
 services:
+  app:
+    image: police-community-app
+    build: .
+    ports:
+      - "6206:6206"
+    depends_on:
+      - postgres-db
   postgres-db:
     image: postgres
     container_name: postgres-db
