@@ -1,16 +1,24 @@
 export interface NewsInterface {
-  date: string;
+  changeDate: string | null;
+  creationDate: string;
   id: number;
   title: string;
   content: string;
-  isEditable: boolean;
+  editable: boolean;
+  author: NewsAuthorInterface;
 }
 
-// TODO: fix after mocks remove, remove date field
+export interface NewsCreateInterface
+  extends Pick<NewsInterface, "title" | "content" | "editable"> {}
+
 export interface NewsEditInterface
-  extends Omit<NewsInterface, "isEditable" | "id"> {
-  id: number | null;
-}
+  extends Pick<NewsInterface, "title" | "content" | "editable"> {}
 
 export interface NewsErrorsInterface
   extends Pick<NewsInterface, "title" | "content"> {}
+
+export interface NewsAuthorInterface {
+  id: number;
+  phoneNumber: string;
+  role: any; // TODO: fix later
+}

@@ -5,25 +5,23 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { NewsInterface } from "@/modules/news/interfaces";
+import { getNews } from "@/modules/news/api";
 
 const NewsPage = () => {
   const [data, setData] = useState<NewsInterface[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      const newsStorage = localStorage.getItem("news");
-
-      const news: NewsInterface[] = [];
-
-      if (newsStorage) {
-        news.push(...JSON.parse(newsStorage));
-      }
-
-      setData(news);
-      setLoading(false);
-    }, 1500);
+    try {
+      setLoading(true);
+      getNews()
+        .then((response) => {
+          setData(response.data.content as NewsInterface[]);
+        })
+        .finally(() => setLoading(false));
+    } catch (e) {
+      console.error(e);
+    }
   }, []);
 
   if (loading) return <div>Loading...</div>;
@@ -36,11 +34,10 @@ const NewsPage = () => {
             <Button variant={"contained"}>Добавить новость</Button>
           </Link>
         </div>
-        {data.map(({ id, title, content, date }) => (
+        {data.map(({ id, title, content }) => (
           <div className={"flex gap-1 justify-between"} key={id}>
             <div>{title}</div>
             <div dangerouslySetInnerHTML={{ __html: content }} />
-            <div>{date}</div>
             <Link href={"/dashboard/news/edit/" + id}>
               <Button className={"h-[36.5px]"} variant={"contained"}>
                 Редактировать

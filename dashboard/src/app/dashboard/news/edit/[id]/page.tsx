@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Button, Typography } from "@mui/material";
-import { format } from "date-fns";
 import {
   NewsEditInterface,
   NewsErrorsInterface,
@@ -11,6 +10,7 @@ import {
 import NewsEditor from "@/modules/news/components/NewsEditor";
 import NewsEditorSkeleton from "@/modules/news/components/NewsEditorSkeleton";
 import { useParams, useRouter } from "next/navigation";
+import { getNewsById, updateNews } from "@/modules/news/api";
 
 const NewsPage = () => {
   const { id } = useParams();
@@ -20,9 +20,8 @@ const NewsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [initialState, setInitialState] = useState<NewsEditInterface>({
     title: "",
-    date: "",
     content: "",
-    id: null,
+    editable: true,
   });
 
   // TODO: Add validation
@@ -31,61 +30,36 @@ const NewsPage = () => {
     content: "",
   });
 
-  // TODO: Remove after mocks remove
-  const newsStorage = localStorage.getItem("news");
-
-  const news: NewsInterface[] = [];
-
-  if (newsStorage) {
-    news.push(...JSON.parse(newsStorage));
-  }
-
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
+    setIsLoading(true);
+    try {
+      getNewsById(Number(id))
+        .then((res) => {
+          const newsData = res.data as NewsInterface;
 
-      if (news.length > 0) {
-        const currentNewsItem = news.find((el) => el.id === Number(id));
-
-        currentNewsItem && setInitialState(currentNewsItem);
-      }
-
-      //   TODO: Переделать после удаления моков
-    }, 150);
+          setInitialState((prevState) => ({
+            ...prevState,
+            title: newsData.title,
+            content: newsData.content,
+          }));
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } finally {
+    }
   }, []);
 
   const onSave = () => {
-    /**
-     * После того как API будет готова, убрать:
-     * setIsLoading
-     * setTimeout
-     * const now = new Date();
-     * const formattedDate = format(now, "dd.MM.yyyy HH:mm:ss");
-     * const id = new Date().getTime();
-     * newsStorage
-     * localStorage.setItem
-     */
-    setIsLoading(true);
-    setTimeout(() => {
-      const now = new Date();
-      const formattedDate = format(now, "dd.MM.yyyy HH:mm:ss");
-
-      // TODO: Remove
-
-      const newNewsArray = news.map((item) => {
-        if (item.id === Number(id)) {
-          return { ...initialState, date: formattedDate };
-        } else {
-          return item;
-        }
-      });
-
-      localStorage.setItem("news", JSON.stringify(newNewsArray));
-
-      setIsLoading(false);
-    }, 500);
-
-    router.push("/dashboard/news");
+    try {
+      updateNews(Number(id), initialState)
+        .then(() => {
+          router.push("/dashboard/news");
+        })
+        .finally(() => setIsLoading(false));
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
