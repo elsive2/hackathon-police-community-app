@@ -10,9 +10,11 @@ import {
 } from "@/modules/news/interfaces";
 import NewsEditor from "@/modules/news/components/NewsEditor";
 import NewsEditorSkeleton from "@/modules/news/components/NewsEditorSkeleton";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 const NewsPage = () => {
+  const { id } = useParams();
+
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -29,9 +31,26 @@ const NewsPage = () => {
     content: "",
   });
 
+  // TODO: Remove after mocks remove
+  const newsStorage = localStorage.getItem("news");
+
+  const news: NewsInterface[] = [];
+
+  if (newsStorage) {
+    news.push(...JSON.parse(newsStorage));
+  }
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
+
+      if (news.length > 0) {
+        const currentNewsItem = news.find((el) => el.id === Number(id));
+
+        currentNewsItem && setInitialState(currentNewsItem);
+      }
+
+      //   TODO: Переделать после удаления моков
     }, 150);
   }, []);
 
@@ -50,21 +69,18 @@ const NewsPage = () => {
     setTimeout(() => {
       const now = new Date();
       const formattedDate = format(now, "dd.MM.yyyy HH:mm:ss");
-      const id = new Date().getTime();
 
-      // TODO: Remove after mocks remove
-      const newsStorage = localStorage.getItem("news");
+      // TODO: Remove
 
-      const news: NewsInterface[] = [];
+      const newNewsArray = news.map((item) => {
+        if (item.id === Number(id)) {
+          return { ...initialState, date: formattedDate };
+        } else {
+          return item;
+        }
+      });
 
-      if (newsStorage) {
-        news.push(...JSON.parse(newsStorage));
-      }
-
-      localStorage.setItem(
-        "news",
-        JSON.stringify([...news, { ...initialState, date: formattedDate, id }]),
-      );
+      localStorage.setItem("news", JSON.stringify(newNewsArray));
 
       setIsLoading(false);
     }, 500);
@@ -76,7 +92,7 @@ const NewsPage = () => {
     <div className={"flex flex-col gap-4"}>
       <div className={"flex justify-between"}>
         <Typography variant={"h5"} className={"flex"}>
-          Добавить новость
+          Редактировать новость
         </Typography>
         <Button loading={isLoading} onClick={onSave} variant={"contained"}>
           Сохранить
