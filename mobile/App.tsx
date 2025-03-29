@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import NewsScreen from "./src/screens/NewsScreen";
+import IndexScreen from "./src/screens/IndexScreen";
 import AuthScreen from "./src/screens/AuthScreen";
 import { PaperProvider } from "react-native-paper";
 
@@ -8,12 +8,12 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <PaperProvider>
+    <PaperProvider theme={{ dark: false }}>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
             name="news"
-            component={NewsScreen}
+            component={IndexScreen}
             options={{ title: "Новости" }}
           />
           <Stack.Screen
