@@ -16,6 +16,7 @@ public class SosAlertMapper {
                 .setLatitude(sosAlert.getLatitude())
                 .setLongitude(sosAlert.getLongitude())
                 .setStatus(sosAlert.getStatus())
+                .setComment(sosAlert.getComment())
                 .setCreateDate(sosAlert.getCreateDate())
                 .setChangeDate(sosAlert.getChangeDate())
                 .setRightsResponse(

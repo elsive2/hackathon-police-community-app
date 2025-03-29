@@ -17,6 +17,8 @@ public class SosAlertResponse {
 
     private Status status;
 
+    private String comment;
+
     private LocalDateTime createDate;
 
     private LocalDateTime changeDate;

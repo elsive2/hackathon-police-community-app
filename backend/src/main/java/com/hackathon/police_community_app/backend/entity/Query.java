@@ -1,14 +1,14 @@
 package com.hackathon.police_community_app.backend.entity;
 
+import com.hackathon.police_community_app.backend.enums.QueryCategory;
 import com.hackathon.police_community_app.backend.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Entity
 @Table
 @Data
-public class Message extends BaseEntity {
+public class Query extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,6 +33,7 @@ public class Message extends BaseEntity {
     @Column(nullable = false, length = 20)
     private Status status;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
-    private String category;
+    private QueryCategory category;
 }
