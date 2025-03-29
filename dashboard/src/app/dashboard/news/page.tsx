@@ -6,10 +6,12 @@ import { useEffect, useState } from "react";
 
 import { NewsInterface } from "@/modules/news/interfaces";
 import { getNews } from "@/modules/news/api";
+import NewsCard from "@/modules/news/components/NewsCard";
 
 const NewsPage = () => {
   const [data, setData] = useState<NewsInterface[]>([]);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     try {
@@ -34,16 +36,8 @@ const NewsPage = () => {
             <Button variant={"contained"}>Добавить новость</Button>
           </Link>
         </div>
-        {data.map(({ id, title, content }) => (
-          <div className={"flex gap-1 justify-between"} key={id}>
-            <div>{title}</div>
-            <div dangerouslySetInnerHTML={{ __html: content }} />
-            <Link href={"/dashboard/news/edit/" + id}>
-              <Button className={"h-[36.5px]"} variant={"contained"}>
-                Редактировать
-              </Button>
-            </Link>
-          </div>
+        {data.map(({ id, title, content, creationDate })=> (
+          <NewsCard key={id} id={id} title={title} content={content} creationDate={creationDate}/>
         ))}
       </div>
     </>
