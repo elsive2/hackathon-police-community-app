@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class InvalidSmsCodeException extends BaseException {
     public InvalidSmsCodeException() {
-        super("Invalid code", HttpStatus.BAD_REQUEST);
+        super("Неверный код СМС", HttpStatus.BAD_REQUEST);
     }
 }
