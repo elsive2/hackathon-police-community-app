@@ -1,0 +1,64 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create_table_message" author="Maxim">
+        <createTable tableName="message">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_message_user" references="users(id)"/>
+            </column>
+            <column name="content" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="media_url" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="latitude" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="longitude" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="is_deleted" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="change_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="idx_message_user_id"
+                     schemaName="public"
+                     tableName="message">
+            <column name="user_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_message_status"
+                     schemaName="public"
+                     tableName="message">
+            <column name="status"/>
+        </createIndex>
+
+        <createIndex indexName="idx_message_category"
+                     schemaName="public"
+                     tableName="message">
+            <column name="category"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

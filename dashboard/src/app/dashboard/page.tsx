@@ -1,5 +1,7 @@
+import { redirect } from "next/navigation";
+
 const DashboardPage = () => {
-  return <div>Page</div>;
+  redirect("/dashboard/sos");
 };
 
 export default DashboardPage;
