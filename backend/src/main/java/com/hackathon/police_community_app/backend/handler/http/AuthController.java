@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 // @TODO: Придумать как сделать версионность
-@Tag(name = "Auth", description = "Auth")
+@Tag(name = "Auth", description = "Авторизация")
 @RequestMapping("/api/auth")
 @RestController
 @AllArgsConstructor
