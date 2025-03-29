@@ -21,7 +21,7 @@ const SosTable = ({ data }: {data: SOSInterface[]}) => {
                 key={row.id}
                 sx={{ cursor: "pointer" }}
               >
-                <TableCell align="left">{row.location}</TableCell>
+                <TableCell align="left" >{row.location}</TableCell>
                 <TableCell align="center">{row.phone}</TableCell>
                 <TableCell align="center">{row.date}</TableCell>
                 <TableCell align="center">{getStatus(row.status)}</TableCell>
