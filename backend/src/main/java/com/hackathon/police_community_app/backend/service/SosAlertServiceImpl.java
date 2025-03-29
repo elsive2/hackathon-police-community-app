@@ -62,7 +62,8 @@ public class SosAlertServiceImpl implements SosAlertService {
         sosAlert.setLatitude(request.getLatitude())
                 .setLongitude(request.getLongitude())
                 .setPhoneNumber(phone)
-                .setStatus(Status.NEW);
+                .setStatus(Status.NEW)
+                .setComment(request.getComment());
 
         sosAlert = sosAlertRepository.save(sosAlert);
 
@@ -74,7 +75,8 @@ public class SosAlertServiceImpl implements SosAlertService {
         SosAlert sosAlert = sosAlertRepository.findByIdRequired(id);
 
         sosAlert.setLatitude(request.getLatitude())
-                .setLongitude(request.getLongitude());
+                .setLongitude(request.getLongitude())
+                .setComment(request.getComment());
 
         return mapper.toResponse(sosAlert);
     }
