@@ -12,9 +12,9 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name="news"
+            name="index"
             component={IndexScreen}
-            options={{ title: "Новости" }}
+            options={{ title: "Главная" }}
           />
           <Stack.Screen
             name="auth"

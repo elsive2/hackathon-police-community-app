@@ -32,7 +32,7 @@ const AuthScreen = () => {
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: "news" }],
+            routes: [{ name: "index" }],
           }),
         );
       });
