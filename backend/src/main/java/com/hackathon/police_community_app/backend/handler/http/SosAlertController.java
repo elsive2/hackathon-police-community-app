@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Objects;
 
-@Tag(name = "Sos Alert", description = "Sos Alert")
+@Tag(name = "Sos Alert", description = "SOS Тревога")
 @RequestMapping("/api/sos-alerts")
 @AllArgsConstructor
 @RestController
@@ -35,7 +35,7 @@ public class SosAlertController {
 
     @Operation(summary = "Получение всех SOS-алертов по номеру телефона")
     @GetMapping("/phone/{phoneNumber}")
-    @PreAuthorize("hasRole('POLICE')")
+    @PreAuthorize("hasRole('POLICE') || hasRole('ADMIN')")
     public PagedResponse<SosAlertResponse> getAllByPhoneNumber(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -45,7 +45,7 @@ public class SosAlertController {
 
     @Operation(summary = "Получение SOS-алерта по идентификатору")
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('POLICE')")
+    @PreAuthorize("hasRole('POLICE') || hasRole('ADMIN')")
     public SosAlertResponse getById(@PathVariable Long id) {
         return service.getById(id);
     }
@@ -63,7 +63,7 @@ public class SosAlertController {
 
     @Operation(summary = "Обновление SOS-алерта")
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('POLICE')")
+    @PreAuthorize("hasRole('POLICE') || hasRole('ADMIN')")
     public SosAlertResponse update(
             @PathVariable Long id,
             @RequestBody SosAlertRequest request) {
@@ -73,14 +73,14 @@ public class SosAlertController {
 
     @Operation(summary = "Удаление SOS-алерта")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('POLICE')")
+    @PreAuthorize("hasRole('POLICE') || hasRole('ADMIN')")
     public void deleteSosAlert(@PathVariable Long id) {
         service.delete(id);
     }
 
     @Operation(summary = "Обновить статус до завершения SOS-алерта")
     @PutMapping("/{id}/finish")
-    @PreAuthorize("hasRole('POLICE')")
+    @PreAuthorize("hasRole('POLICE') || hasRole('ADMIN')")
     public SingleMessageResponse finish(@PathVariable Long id) {
         service.finish(id);
 
@@ -89,7 +89,7 @@ public class SosAlertController {
 
     @Operation(summary = "Обновить статус до отклонения SOS-алерта")
     @PutMapping("/{id}/reject")
-    @PreAuthorize("hasRole('POLICE')")
+    @PreAuthorize("hasRole('POLICE') || hasRole('ADMIN')")
     public SingleMessageResponse reject(@PathVariable Long id) {
         service.reject(id);
 
@@ -98,7 +98,7 @@ public class SosAlertController {
 
     @Operation(summary = "Назначение авторизованного пользователя как ответственного за SOS-алерта")
     @PutMapping("/{id}/assign")
-    @PreAuthorize("hasRole('POLICE')")
+    @PreAuthorize("hasRole('POLICE') || hasRole('ADMIN')")
     public SingleMessageResponse assignResponsible(
             @PathVariable Long id,
             Principal principal
