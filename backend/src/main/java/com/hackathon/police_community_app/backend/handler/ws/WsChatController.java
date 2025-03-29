@@ -1,7 +1,7 @@
 package com.hackathon.police_community_app.backend.handler.ws;
 
-import com.hackathon.police_community_app.backend.dto.ChatNotificationDto;
 import com.hackathon.police_community_app.backend.dto.request.ChatMessageRequest;
+import com.hackathon.police_community_app.backend.dto.response.SingleMessageResponse;
 import com.hackathon.police_community_app.backend.entity.ChatMessage;
 import com.hackathon.police_community_app.backend.entity.ChatRoom;
 import com.hackathon.police_community_app.backend.entity.User;
@@ -16,12 +16,9 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import java.security.Principal;
-import java.util.Optional;
-
 @AllArgsConstructor
 @Controller
-public class ChatController {
+public class WsChatController {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final ChatMessageService chatMessageService;
     private final ChatRoomService chatRoomService;
@@ -29,7 +26,8 @@ public class ChatController {
 
     @SneakyThrows
     @MessageMapping("/chat")
-    public void processMessage(@Payload ChatMessageRequest chatMessage) {
+    @SendTo("/topic/messages")
+    public SingleMessageResponse processMessage(@Payload ChatMessageRequest chatMessage) {
         Thread.sleep(3000L);
 
         System.out.println("dsdasd");
@@ -46,16 +44,18 @@ public class ChatController {
 
         ChatMessage message = chatMessageService.save(chatMessage, chat, sender, recipient);
 
-        if (recipient != null && message.getAssignedTo() != null) {
-            simpMessagingTemplate.convertAndSendToUser(
-                    chatMessage.getRecipientId().toString(),
-                    "/topic/messages",
-                    new ChatNotificationDto(
-                            message.getId(),
-                            message.getAssignedTo().getId(),
-                            message.getAssignedTo().getPhoneNumber()
-                    )
-            );
-        }
+        return new SingleMessageResponse("sdasd");
+
+//        if (recipient != null && message.getAssignedTo() != null) {
+//            simpMessagingTemplate.convertAndSendToUser(
+//                    chatMessage.getRecipientId().toString(),
+//                    "/topic/messages",
+//                    new ChatNotificationDto(
+//                            message.getId(),
+//                            message.getAssignedTo().getId(),
+//                            message.getAssignedTo().getPhoneNumber()
+//                    )
+//            );
+//        }
     }
 }

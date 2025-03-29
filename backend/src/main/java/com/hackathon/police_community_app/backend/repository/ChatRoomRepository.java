@@ -1,6 +1,7 @@
 package com.hackathon.police_community_app.backend.repository;
 
 import com.hackathon.police_community_app.backend.entity.ChatRoom;
+import com.hackathon.police_community_app.backend.exception.ChatRoomNotFoundException;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +17,11 @@ public interface ChatRoomRepository extends CrudRepository<ChatRoom, Long> {
 
     default ChatRoom findBySenderAndRecipientRequired(Long senderId, Long recipientId) {
         return findBySenderIdAndRecipientId(recipientId, senderId).orElseThrow();
+    }
+
+    Optional<ChatRoom> findByIsDeletedFalseAndId(Long id);
+
+    default ChatRoom findByIdRequired(Long id) {
+        return findByIsDeletedFalseAndId(id).orElseThrow(ChatRoomNotFoundException::new);
     }
 }
