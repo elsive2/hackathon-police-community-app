@@ -8,7 +8,7 @@ import {
   InputLabel,
   Typography,
 } from "@mui/material";
-import PhoneInput from "@/components/phoneInput";
+import phoneInput from "@/components/phoneInput";
 import { useEffect, useState } from "react";
 import { AuthForm, AuthFormState } from "@/modules/auth/interface";
 import { requestCode, verifyCode } from "@/modules/auth/api";
@@ -82,7 +82,7 @@ const AuthPage = () => {
                 phone: e.target.value,
               }))
             }
-            inputComponent={PhoneInput as any}
+            inputComponent={phoneInput as any}
           />
         </FormControl>
         {formState.state === AuthFormState.VerifyCode && (
