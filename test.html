@@ -1,0 +1,45 @@
+<script type="importmap">
+    {
+      "imports": {
+        "@stomp/stompjs": "https://ga.jspm.io/npm:@stomp/stompjs@7.0.0/esm6/index.js",
+        "sockjs-client": "https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"
+      }
+    }
+</script>
+
+<script async src="https://ga.jspm.io/npm:es-module-shims@1.7.2/dist/es-module-shims.js"></script>
+
+<script type="module">
+    import { Client } from "@stomp/stompjs";
+    import * as SockJS from "sockjs-client"; // ✅ Исправленный импорт
+
+    const socket = new SockJS("http://localhost:6206/ws"); // ✅ Теперь работает
+
+    const client = new Client({
+        webSocketFactory: () => socket, // Используем SockJS
+        debug: (str) => console.log("STOMP: " + str),
+        reconnectDelay: 5000,
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+    });
+
+    client.onConnect = (frame) => {
+        console.log("✅ Connected to WebSocket");
+        client.subscribe("/topic/messages", (message) =>
+            console.log("📩 Received:", message.body)
+        );
+        client.publish({
+            destination: "/app/chat",
+            body: JSON.stringify({ content: "Hello from frontend!" }),
+        });
+    };
+
+    client.onStompError = (frame) => {
+        console.error("❌ STOMP Error:", frame.headers.message);
+        console.error("📄 Details:", frame.body);
+    };
+
+    client.activate();
+
+
+</script>

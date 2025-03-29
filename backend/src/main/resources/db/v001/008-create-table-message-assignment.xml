@@ -1,0 +1,37 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create_table_message_assignment" author="Maxim">
+        <createTable tableName="message_assignment">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="message_id" type="varchar(36)">
+                <constraints nullable="false" foreignKeyName="fk_assignment_message" references="chat_message(id)"/>
+            </column>
+            <column name="assignee_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_assignment_assignee" references="users(id)"/>
+            </column>
+            <column name="assign_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Поля из BaseEntity -->
+            <column name="is_deleted" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="change_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

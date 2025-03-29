@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 public class UnsupportedFileTypeException extends BaseException {
 
     public UnsupportedFileTypeException() {
-        super("Unsupported file type", HttpStatus.BAD_REQUEST);
+        super("Тип файла не поддерживается", HttpStatus.BAD_REQUEST);
     }
 }

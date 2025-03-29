@@ -40,15 +40,17 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/context/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/sos-alerts").permitAll()
-                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**", "/actuator/**").permitAll()
-                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers(HttpMethod.OPTIONS).permitAll()
+//                        .requestMatchers("/api/auth/**").permitAll()
+//                        .requestMatchers("/api/context/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/api/sos-alerts").permitAll()
+//                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**", "/actuator/**").permitAll()
+//                        .requestMatchers("/ws/**").permitAll()
+//                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))

@@ -1,0 +1,37 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create-table-chat-room" author="Maxim">
+        <createTable tableName="chat_room">
+            <column name="id" type="varchar(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sender_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_chat_room_sender" references="users(id)"/>
+            </column>
+            <column name="recipient_id" type="bigint">
+                <constraints nullable="true" foreignKeyName="fk_chat_room_recipient" references="users(id)"/>
+            </column>
+
+            <!-- Поля из BaseEntity -->
+            <column name="is_deleted" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="change_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="idx_chat_room_sender_recipient"
+                     tableName="chat_room">
+            <column name="sender_id"/>
+            <column name="recipient_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

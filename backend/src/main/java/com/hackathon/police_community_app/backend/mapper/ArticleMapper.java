@@ -18,7 +18,7 @@ public class ArticleMapper {
         response.setId(article.getId())
                 .setTitle(article.getTitle())
                 .setContent(article.getContent())
-                .setIsEditable(article.getEditable())
+                .setEditable(article.getEditable())
                 .setCreationDate(article.getCreateDate())
                 .setChangeDate(article.getChangeDate())
                 .setAuthor(user);

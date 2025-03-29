@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class InvalidFileSignatureException extends BaseException{
     public InvalidFileSignatureException() {
-        super("Invalid file signature", HttpStatus.BAD_REQUEST);
+        super("Не правильная подпись файла", HttpStatus.BAD_REQUEST);
     }
 }

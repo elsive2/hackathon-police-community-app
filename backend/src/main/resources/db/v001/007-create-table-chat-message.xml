@@ -1,0 +1,53 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create_table_chat_message" author="Maxim">
+        <createTable tableName="chat_message">
+            <column name="id" type="varchar(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="chat_id" type="varchar(36)">
+                <constraints nullable="false" foreignKeyName="fk_chat_message_room" references="chat_room(id)"/>
+            </column>
+            <column name="sender_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_chat_message_sender" references="users(id)"/>
+            </column>
+            <column name="content" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="assigned_to" type="bigint">
+                <constraints nullable="true" foreignKeyName="fk_chat_message_assigned" references="users(id)"/>
+            </column>
+            <column name="is_assigned" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Поля из BaseEntity -->
+            <column name="is_deleted" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="change_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="idx_chat_message_chat_id"
+                     tableName="chat_message">
+            <column name="chat_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_chat_message_status"
+                     tableName="chat_message">
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
