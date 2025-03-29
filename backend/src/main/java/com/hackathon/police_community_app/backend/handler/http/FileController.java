@@ -2,6 +2,7 @@ package com.hackathon.police_community_app.backend.handler.http;
 
 import com.hackathon.police_community_app.backend.dto.response.FileUploadResponse;
 import com.hackathon.police_community_app.backend.service.UploadService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileController {
     private final UploadService uploadService;
 
+
+    @RateLimiter(name = "myService")
     @Operation(summary = "Загрузка файла и получение ссылки")
     @PostMapping("/upload")
     public FileUploadResponse uploadFile(@RequestParam("file") MultipartFile file) {

@@ -25,6 +25,8 @@ public class MinioService implements UploadService {
 
     public FileUploadResponse uploadFile(MultipartFile file) {
         try {
+            validateFile(file);
+
             String originalFilename = file.getOriginalFilename();
             String fileExtension = StringUtils.getFilenameExtension(originalFilename);
             String generatedFilename = UUID.randomUUID() + "." + fileExtension;
@@ -44,7 +46,7 @@ public class MinioService implements UploadService {
             return new FileUploadResponse(
                     generatedFilename,
                     originalFilename,
-                    directUrl,  // Прямая постоянная ссылка
+                    directUrl,
                     file.getSize(),
                     file.getContentType()
             );

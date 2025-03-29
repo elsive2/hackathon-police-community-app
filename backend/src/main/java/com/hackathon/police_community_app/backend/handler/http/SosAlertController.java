@@ -6,6 +6,7 @@ import com.hackathon.police_community_app.backend.dto.response.PagedResponse;
 import com.hackathon.police_community_app.backend.dto.response.SingleMessageResponse;
 import com.hackathon.police_community_app.backend.dto.response.SosAlertResponse;
 import com.hackathon.police_community_app.backend.service.SosAlertService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -50,6 +51,7 @@ public class SosAlertController {
         return service.getById(id);
     }
 
+    @RateLimiter(name = "myService")
     @Operation(summary = "Сохранение SOS-алерта")
     @PostMapping
     public ResponseEntity<SosAlertResponse> createSosAlert(@RequestBody SosAlertRequest request, Principal principal) {
