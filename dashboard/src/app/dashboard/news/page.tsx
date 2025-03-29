@@ -41,6 +41,11 @@ const NewsPage = () => {
             <div>{title}</div>
             <div dangerouslySetInnerHTML={{ __html: content }} />
             <div>{date}</div>
+            <Link href={"/dashboard/news/edit/" + id}>
+              <Button className={"h-[36.5px]"} variant={"contained"}>
+                Редактировать
+              </Button>
+            </Link>
           </div>
         ))}
       </div>
