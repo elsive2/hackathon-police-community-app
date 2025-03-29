@@ -8,11 +8,11 @@ import {
   InputLabel,
   Typography,
 } from "@mui/material";
-import PhoneInput from "@/components/phone-input";
 import { useEffect, useState } from "react";
 import { AuthForm, AuthFormState } from "@/modules/auth/interface";
 import { requestCode, verifyCode } from "@/modules/auth/api";
 import { useRouter } from "next/navigation";
+import PhoneInput from "@/components/phoneInput";
 
 const AuthPage = () => {
   const router = useRouter();

@@ -12,7 +12,7 @@ export const chatsData: ChatInterface[] = [
     id: 2,
     phone: "+7(777) 987-65-43",
     date: "28.03.2025 12:30",
-    startMessage: "Добрый день! Когда будет доставка моего заказа №12345?",
+    startMessage: "Добрый день! Когда будет доставка моего заказа №12345",
     isNew: true,
   },
   {
