@@ -25,7 +25,7 @@ public class SosAlert extends BaseEntity {
     @Column(nullable = false, length = 20)
     private Status status;
 
-    @Column(name = "phone_number", length = 255)
+    @Column(name = "comment", length = 255)
     private String comment;
 
     @ManyToOne
