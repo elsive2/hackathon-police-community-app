@@ -28,9 +28,8 @@ public class ChatController {
     private final UserService userService;
 
     @SneakyThrows
-    @SendTo("/topic/messaging")
     @MessageMapping("/chat")
-    public void processMessage(@Payload ChatMessageRequest chatMessage, Principal principal) {
+    public void processMessage(@Payload ChatMessageRequest chatMessage) {
         Thread.sleep(3000L);
 
         System.out.println("dsdasd");
@@ -47,10 +46,10 @@ public class ChatController {
 
         ChatMessage message = chatMessageService.save(chatMessage, chat, sender, recipient);
 
-        if (message.getAssignedTo() != null) {
+        if (recipient != null && message.getAssignedTo() != null) {
             simpMessagingTemplate.convertAndSendToUser(
                     chatMessage.getRecipientId().toString(),
-                    "/queue/messages",
+                    "/topic/messages",
                     new ChatNotificationDto(
                             message.getId(),
                             message.getAssignedTo().getId(),

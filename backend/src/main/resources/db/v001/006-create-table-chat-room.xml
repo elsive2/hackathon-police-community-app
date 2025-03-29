@@ -6,7 +6,7 @@
 
     <changeSet id="create-table-chat-room" author="Maxim">
         <createTable tableName="chat_room">
-            <column name="id" type="varchar(36)">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="sender_id" type="bigint">

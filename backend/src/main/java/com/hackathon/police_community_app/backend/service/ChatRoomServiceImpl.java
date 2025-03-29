@@ -24,6 +24,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             ChatRoom newChatRoom = new ChatRoom();
             newChatRoom.setSender(sender)
                     .setRecipient(recipient);
+
+            chatRoomRepository.save(newChatRoom);
             return newChatRoom;
         }
 

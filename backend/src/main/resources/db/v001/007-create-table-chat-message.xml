@@ -6,10 +6,10 @@
 
     <changeSet id="create_table_chat_message" author="Maxim">
         <createTable tableName="chat_message">
-            <column name="id" type="varchar(36)">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="chat_id" type="varchar(36)">
+            <column name="chat_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_chat_message_room" references="chat_room(id)"/>
             </column>
             <column name="sender_id" type="bigint">

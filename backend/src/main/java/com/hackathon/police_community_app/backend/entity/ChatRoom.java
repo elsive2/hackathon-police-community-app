@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ChatRoom extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
