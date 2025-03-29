@@ -32,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 docker
+stomp/node_modules
