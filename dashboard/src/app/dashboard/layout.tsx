@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   CssBaseline,
@@ -15,7 +15,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 
 const drawerWidth = 240;
@@ -25,6 +25,7 @@ const DashboardLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const router = useRouter();
   const pathname = usePathname();
 
   const navigation = [
@@ -45,6 +46,14 @@ const DashboardLayout = ({
       value: "/news",
     },
   ];
+
+  useEffect(() => {
+    const token = localStorage?.getItem("token");
+
+    if (!token) {
+      router.push("/auth");
+    }
+  }, []);
 
   const currentTitle = navigation.find(
     (item) => `/dashboard${item.value}` === pathname,
