@@ -2,25 +2,23 @@
 
 import { useEffect, useState } from "react";
 import { Button, Typography } from "@mui/material";
-import { format } from "date-fns";
 import {
-  NewsEditInterface,
+  NewsCreateInterface,
   NewsErrorsInterface,
-  NewsInterface,
 } from "@/modules/news/interfaces";
 import NewsEditor from "@/modules/news/components/NewsEditor";
 import NewsEditorSkeleton from "@/modules/news/components/NewsEditorSkeleton";
 import { useRouter } from "next/navigation";
+import { createNews } from "@/modules/news/api";
 
 const NewsPage = () => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [initialState, setInitialState] = useState<NewsEditInterface>({
+  const [initialState, setInitialState] = useState<NewsCreateInterface>({
     title: "",
-    date: "",
     content: "",
-    id: null,
+    editable: true,
   });
 
   // TODO: Add validation
@@ -36,40 +34,15 @@ const NewsPage = () => {
   }, []);
 
   const onSave = () => {
-    /**
-     * После того как API будет готова, убрать:
-     * setIsLoading
-     * setTimeout
-     * const now = new Date();
-     * const formattedDate = format(now, "dd.MM.yyyy HH:mm:ss");
-     * const id = new Date().getTime();
-     * newsStorage
-     * localStorage.setItem
-     */
-    setIsLoading(true);
-    setTimeout(() => {
-      const now = new Date();
-      const formattedDate = format(now, "dd.MM.yyyy HH:mm:ss");
-      const id = new Date().getTime();
+    try {
+      setIsLoading(true);
 
-      // TODO: Remove after mocks remove
-      const newsStorage = localStorage.getItem("news");
-
-      const news: NewsInterface[] = [];
-
-      if (newsStorage) {
-        news.push(...JSON.parse(newsStorage));
-      }
-
-      localStorage.setItem(
-        "news",
-        JSON.stringify([...news, { ...initialState, date: formattedDate, id }]),
-      );
-
+      createNews(initialState).then(() => {
+        router.push("/dashboard/news");
+      });
+    } finally {
       setIsLoading(false);
-    }, 500);
-
-    router.push("/dashboard/news");
+    }
   };
 
   return (
