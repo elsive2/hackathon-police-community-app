@@ -8,7 +8,7 @@ import {
   InputLabel,
   Typography,
 } from "@mui/material";
-import PhoneInput from "@/components/phone-input";
+import PhoneInput from "@/components/phoneInput";
 import { useEffect, useState } from "react";
 import { AuthForm, AuthFormState } from "@/modules/auth/interface";
 import { requestCode, verifyCode } from "@/modules/auth/api";
