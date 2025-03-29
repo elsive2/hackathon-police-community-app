@@ -6,6 +6,7 @@ import Bold from "@tiptap/extension-bold";
 import { Italic } from "@tiptap/extension-italic";
 import { Strike } from "@tiptap/extension-strike";
 import { Underline } from "@tiptap/extension-underline";
+import { Paragraph } from "@tiptap/extension-paragraph";
 
 export const getExtensions = () => {
   return [
@@ -45,5 +46,7 @@ export const getExtensions = () => {
     Italic,
     Strike,
     Underline,
+    Document,
+    Paragraph,
   ] as Extensions;
 };
