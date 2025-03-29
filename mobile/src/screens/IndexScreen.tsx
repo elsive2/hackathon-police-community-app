@@ -2,8 +2,7 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useEffect, useLayoutEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BottomNavigation, Text } from "react-native-paper";
-
-const NewsRoute = () => <Text>News</Text>;
+import NewsTab from "../tabs/News";
 
 const SosRoute = () => <Text>Sos</Text>;
 
@@ -67,7 +66,7 @@ const IndexScreen = () => {
   }, [index, routes, navigation]);
 
   const renderScene = BottomNavigation.SceneMap({
-    news: NewsRoute,
+    news: NewsTab,
     sos: SosRoute,
     chat: ChatRoute,
     application: ApplicationsRoute,
