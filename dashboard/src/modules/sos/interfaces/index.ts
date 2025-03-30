@@ -8,9 +8,11 @@ export enum SosStatusEnum {
 export interface SOSInterface {
   id: number;
   location: string;
+  latitude: number;
+  longitude: number;
   phoneNumber: string;
   createDate: string;
-  comment: string,
-  address: string,
+  comment: string;
+  address: string;
   status: SosStatusEnum;
 }

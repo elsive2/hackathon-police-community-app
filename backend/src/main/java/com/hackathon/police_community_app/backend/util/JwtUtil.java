@@ -6,6 +6,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,13 @@ public class JwtUtil {
     @Value("${app.jjwt.secret}")
     private String secret;
 
+    @Getter
     @Value("${app.jjwt.expiration}")
     private String expirationTime;
+
+    @Getter
+    @Value("${app.jjwt.refresh-expiration}")
+    private String refreshExpirationTime;
 
     private Key key;
 
@@ -62,14 +68,22 @@ public class JwtUtil {
         return expiration.before(new Date());
     }
 
-    public String generateToken(Long id, String phone, Role role) {
+    public String generateAccessToken(Long id, String phone, Role role) {
+        return generateToken(id, phone, role, expirationTime);
+    }
+
+    public String generateRefreshToken(Long id, String phone, Role role) {
+        return generateToken(id, phone, role, refreshExpirationTime);
+    }
+
+    private String generateToken(Long id, String phone, Role role, String expirationTime) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
         claims.put("role", role.name());
-        return doGenerateToken(claims, phone);
+        return doGenerateToken(claims, phone, expirationTime);
     }
 
-    private String doGenerateToken(Map<String, Object> claims, String username) {
+    private String doGenerateToken(Map<String, Object> claims, String username, String expirationTime) {
         long expirationTimeLong = Long.parseLong(expirationTime); //in seconds
         final Date createdDate = new Date();
         final Date expirationDate = new Date(createdDate.getTime() + expirationTimeLong * 1000);

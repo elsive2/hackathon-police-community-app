@@ -46,6 +46,8 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
                     return userRepository.save(newUser);
                 });
 
+        smsCodeRepository.delete(smsCode);
+
         return new SmsCodeAuthenticationToken(
                 user.getId(),
                 user.getPhoneNumber(),

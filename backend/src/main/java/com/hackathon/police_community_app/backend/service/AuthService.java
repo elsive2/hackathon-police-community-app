@@ -1,9 +1,11 @@
 package com.hackathon.police_community_app.backend.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import com.hackathon.police_community_app.backend.dto.response.TokenResponse;
 
 public interface AuthService {
     void requestCode(String phoneNumber);
 
-    String verifyCode(String phoneNumber, String code);
+    TokenResponse verifyCode(String phoneNumber, String code);
+
+    TokenResponse verifyRefreshToken(String rawToken);
 }
