@@ -18,6 +18,9 @@ public class SosAlert extends BaseEntity {
     @Column(name = "longitude")
     private Double longitude;
 
+    @Column(name = "address", length = 255)
+    private String address;
+
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 

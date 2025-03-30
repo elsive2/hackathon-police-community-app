@@ -15,6 +15,9 @@
             <column name="longitude" type="double">
                 <constraints nullable="true"/>
             </column>
+            <column name="address" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
             <column name="phone_number" type="varchar(20)">
                 <constraints nullable="true"/>
             </column>
