@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import { formatMessage } from '@/modules/chats/utils/formatMessage';
+import Link from 'next/link';
 
 interface NewsCardProps {
     id: number;
@@ -11,6 +12,8 @@ interface NewsCardProps {
 }
 
 const NewsCard: React.FC<NewsCardProps> = ({ id, title, content, creationDate }) => {
+
+  const [expanded, setExpanded] = useState(false);
 
     const date = parseISO(creationDate);
     
@@ -26,14 +29,20 @@ const NewsCard: React.FC<NewsCardProps> = ({ id, title, content, creationDate })
                 </Typography>
             </Typography>
 
-            <Typography dangerouslySetInnerHTML={{__html: formatMessage(content, 500)}} component="div" />
+            <Typography dangerouslySetInnerHTML={{ __html: expanded ? content : formatMessage(content, 500) }} component="div" />
 
           </CardContent>
           <CardActions>
+          <Link href={"/dashboard/news/edit/" + id}>
             <Button size="small" variant="outlined">Редактировать</Button>
-            <Button size="small" variant="contained">Подробнее</Button>
+          </Link>
+          <Button size="small" variant="contained" onClick={() => setExpanded(!expanded)}>
+                    {expanded ? "Скрыть" : "Подробнее"}
+                </Button>
           </CardActions>
         </Card>
+
+
   )
 }
 
