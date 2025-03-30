@@ -9,6 +9,7 @@ import com.hackathon.police_community_app.backend.service.QueryService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +58,7 @@ public class QueryController {
     @RateLimiter(name = "myService")
     @Operation(summary = "Сохранение заявки")
     @PostMapping
-    public ResponseEntity<QueryResponse> create(@RequestBody QueryRequest request, Principal principal) {
+    public ResponseEntity<QueryResponse> create(@RequestBody @Valid QueryRequest request, Principal principal) {
         SmsCodeAuthenticationToken authentication = (SmsCodeAuthenticationToken) principal;
 
         QueryResponse response = service.create(request, authentication.getUserId());
@@ -70,7 +71,7 @@ public class QueryController {
     @PreAuthorize("hasRole('POLICE') || hasRole('ADMIN')")
     public QueryResponse update(
             @PathVariable Long id,
-            @RequestBody QueryRequest request) {
+            @RequestBody @Valid QueryRequest request) {
         return service.update(id, request);
     }
 

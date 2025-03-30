@@ -14,6 +14,7 @@ public class QueryResponse {
     private String content;
     private String title;
     private Status status;
+    private String address;
     private QueryCategory category;
     private List<QueryPhotoResponse> photos;
     private LocalDateTime createDate;
