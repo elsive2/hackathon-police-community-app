@@ -17,6 +17,8 @@ import {
 } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import logo from '../../assets/images/logo_MDV_RK.png';
+import Image from "next/image";
 
 const drawerWidth = 240;
 
@@ -84,7 +86,9 @@ const DashboardLayout = ({
         variant="permanent"
         anchor="left"
       >
-        <Toolbar />
+        <Toolbar sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "10px", marginRight: "20px" }}>
+        <Image src={logo} alt="Logo" width={50} height={50} /><Typography variant="h5">МВД РК</Typography>
+        </Toolbar>
         <Divider />
         <List>
           {navigation.map(({ label, value }) => (
