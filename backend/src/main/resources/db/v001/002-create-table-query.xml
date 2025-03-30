@@ -27,6 +27,9 @@
             <column name="longitude" type="double">
                 <constraints nullable="true"/>
             </column>
+            <column name="address" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="status" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>

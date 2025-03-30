@@ -34,7 +34,8 @@ public class QueryServiceImpl implements QueryService {
     private final UserRepository userRepository;
 
     private final QueryMapper mapper;
-    private final QueryPhotoRepository queryPhotoRepository;
+
+    private final GeocodingService geocodingService;
 
     @Override
     public PagedResponse<QueryResponse> getAllByUser(Long userId, int page, int size) {
@@ -54,6 +55,8 @@ public class QueryServiceImpl implements QueryService {
     @Override
     @Transactional
     public QueryResponse create(QueryRequest request, Long userId) {
+        String address = geocodingService.getAddressByCoordinates(request.getLatitude(), request.getLongitude());
+
         User user = userRepository.findByIdRequired(userId);
 
         Query query = new Query()
@@ -63,11 +66,11 @@ public class QueryServiceImpl implements QueryService {
                 .setCategory(QueryCategory.valueOf(request.getCategory()))
                 .setLatitude(request.getLatitude())
                 .setLongitude(request.getLongitude())
-                .setStatus(Status.NEW);
+                .setStatus(Status.NEW)
+                .setAddress(address);
 
-        // Обрабатываем фотографии (если они есть)
         if (request.getPhotos() != null && !request.getPhotos().isEmpty()) {
-            List<QueryPhoto> photos = new ArrayList<>(); // Создаем изменяемый список
+            List<QueryPhoto> photos = new ArrayList<>();
 
             for (String photoUrl : request.getPhotos()) {
                 QueryPhoto photo = new QueryPhoto()

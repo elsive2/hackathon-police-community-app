@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileController {
     private final UploadService uploadService;
 
-
     @RateLimiter(name = "myService")
     @Operation(summary = "Загрузка файла и получение ссылки")
     @PostMapping("/upload")

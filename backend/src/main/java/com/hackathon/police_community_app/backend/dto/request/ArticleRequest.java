@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 public class ArticleRequest {
-    @NotBlank
+    @NotBlank(message = "Заголовок обязательное поле")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "Текст обязательное поле")
     private String content;
 
     private Boolean editable = true;

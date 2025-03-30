@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { ChatInterface } from "@/modules/chats/interfaces";
 import { chatsData } from "@/modules/chats/mock";
-import ChatsTable from "@/modules/chats/componets/ChatsTable";
-import { SkeletonTable } from "@/modules/chats/componets/SkeletonTable";
+import ChatsTable from "@/modules/chats/components/ChatsTable";
+import { SkeletonTable } from "@/modules/chats/components/SkeletonTable";
 
 const ChatsPage = () => {
   const [data, setData] = useState<ChatInterface[]>([]);
@@ -18,11 +18,14 @@ const ChatsPage = () => {
     }, 1500);
   }, []);
 
-  if (loading) return <div><SkeletonTable /></div>;
+  if (loading)
+    return (
+      <div>
+        <SkeletonTable />
+      </div>
+    );
 
-  return (
-    <ChatsTable data={data}/>
-  );
+  return <ChatsTable data={data} />;
 };
 
 export default ChatsPage;

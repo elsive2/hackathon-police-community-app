@@ -31,6 +31,8 @@ public class SosAlertServiceImpl implements SosAlertService {
 
     private final UserRepository userRepository;
 
+    private final GeocodingService geocodingService;
+
     public PagedResponse<SosAlertResponse> getAllSosAlerts(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
 
@@ -56,13 +58,15 @@ public class SosAlertServiceImpl implements SosAlertService {
 
     @Override
     public SosAlertResponse create(SosAlertRequest request, String phone) {
-        // @TODO: валидация телефона
+        String address = geocodingService.getAddressByCoordinates(request.getLatitude(), request.getLongitude());
+
         SosAlert sosAlert = new SosAlert();
         sosAlert.setLatitude(request.getLatitude())
                 .setLongitude(request.getLongitude())
                 .setPhoneNumber(phone)
                 .setStatus(Status.NEW)
-                .setComment(request.getComment());
+                .setComment(request.getComment())
+                .setAddress(address);
 
         sosAlert = sosAlertRepository.save(sosAlert);
 

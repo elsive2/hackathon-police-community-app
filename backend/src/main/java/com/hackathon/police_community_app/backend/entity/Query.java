@@ -39,6 +39,9 @@ public class Query extends BaseEntity {
     @Column
     private Double longitude;
 
+    @Column(name = "address", length = 255)
+    private String address;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Status status;

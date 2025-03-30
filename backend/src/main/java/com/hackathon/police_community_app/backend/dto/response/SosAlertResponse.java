@@ -15,6 +15,8 @@ public class SosAlertResponse {
 
     private String phoneNumber;
 
+    private String address;
+
     private Status status;
 
     private String comment;
