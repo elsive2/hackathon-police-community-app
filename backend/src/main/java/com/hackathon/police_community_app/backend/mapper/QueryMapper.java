@@ -21,6 +21,7 @@ public class QueryMapper {
         QueryResponse response = new QueryResponse();
         response.setId(query.getId())
                 .setContent(query.getContent())
+                .setTitle(query.getTitle())
                 .setStatus(query.getStatus())
                 .setCategory(query.getCategory())
                 .setPhotos(photos)

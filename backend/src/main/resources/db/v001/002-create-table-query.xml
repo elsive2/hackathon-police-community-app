@@ -18,6 +18,9 @@
             <column name="content" type="varchar(500)">
                 <constraints nullable="false"/>
             </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="latitude" type="double">
                 <constraints nullable="true"/>
             </column>

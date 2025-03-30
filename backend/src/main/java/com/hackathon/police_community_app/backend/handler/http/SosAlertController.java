@@ -27,7 +27,7 @@ public class SosAlertController {
 
     @Operation(summary = "Получение всех SOS-алертов")
     @GetMapping
-    @PreAuthorize("hasRole('POLICE')")
+    @PreAuthorize("hasRole('POLICE') || hasRole('ADMIN')")
     public PagedResponse<SosAlertResponse> getAll(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {

@@ -27,6 +27,9 @@ public class Query extends BaseEntity {
     @Column(nullable = false, length = 500)
     private String content;
 
+    @Column(nullable = false, length = 500)
+    private String title;
+
     @OneToMany(mappedBy = "query", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QueryPhoto> photos = new ArrayList<>();
 

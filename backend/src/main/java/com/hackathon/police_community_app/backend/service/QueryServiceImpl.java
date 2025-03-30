@@ -59,6 +59,7 @@ public class QueryServiceImpl implements QueryService {
         Query query = new Query()
                 .setUser(user)
                 .setContent(request.getContent())
+                .setTitle(request.getTitle())
                 .setCategory(QueryCategory.valueOf(request.getCategory()))
                 .setLatitude(request.getLatitude())
                 .setLongitude(request.getLongitude())
@@ -90,6 +91,7 @@ public class QueryServiceImpl implements QueryService {
         Query query = queryRepository.findByIdRequired(id);
 
         query.setContent(request.getContent())
+                .setTitle(request.getTitle())
                 .setCategory(QueryCategory.valueOf(request.getCategory()))
                 .setLatitude(request.getLatitude())
                 .setLongitude(request.getLongitude());

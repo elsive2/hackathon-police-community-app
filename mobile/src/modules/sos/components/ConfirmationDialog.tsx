@@ -43,6 +43,12 @@ const ConfirmationDialog = ({
     })();
   }, []);
 
+  useEffect(() => {
+    return () => {
+      setComment("");
+    };
+  }, []);
+
   const onPressCancel = () => {
     hideDialog();
   };
