@@ -12,6 +12,7 @@ import java.util.List;
 public class QueryResponse {
     private Long id;
     private String content;
+    private String title;
     private Status status;
     private QueryCategory category;
     private List<QueryPhotoResponse> photos;
