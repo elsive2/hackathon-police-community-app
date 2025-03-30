@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { sosData } from "@/modules/sos/mock";
 import SosTable from "@/modules/sos/components/SosTable";
 import SkeletonTable from "@/modules/sos/components/SkeletonTable";
+import { getSosAlerts } from "@/modules/sos/api";
 
 const SosPage = () => {
   const [data, setData] = useState<SOSInterface[]>([]);
@@ -18,11 +19,15 @@ const SosPage = () => {
     }, 1500);
   }, []);
 
-  if (loading) return <div><SkeletonTable /></div>;
+  useEffect(() => {
+    getSosAlerts().then((res) => {
+      console.log(res);
+    });
+  }, []);
 
-  return (
-    <SosTable data={data}/>
-  );
+  if (loading) return <SkeletonTable />;
+
+  return <SosTable data={data} />;
 };
 
 export default SosPage;
