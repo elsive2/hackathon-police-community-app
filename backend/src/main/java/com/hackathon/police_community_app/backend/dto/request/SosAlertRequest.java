@@ -7,4 +7,6 @@ public class SosAlertRequest {
     private Double latitude;
 
     private Double longitude;
+
+    private String comment;
 }

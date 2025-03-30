@@ -21,6 +21,9 @@
             <column name="status" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
+            <column name="comment" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
             <column name="user_id" type="bigint">
                 <constraints nullable="true" foreignKeyName="fk_sos_alert_user" references="users(id)"/>
             </column>

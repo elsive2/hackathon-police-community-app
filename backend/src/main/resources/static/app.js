@@ -5,7 +5,8 @@ const stompClient = new StompJs.Client({
 stompClient.onConnect = (frame) => {
     setConnected(true);
     console.log('Connected: ' + frame);
-    stompClient.subscribe('/topic/messages', (greeting) => {
+
+    stompClient.subscribe('/queue/messages/1', (greeting) => {
         console.log(JSON.parse(greeting.body));
         // showGreeting(JSON.parse(greeting.body).content);
     });
@@ -50,6 +51,8 @@ function sendName() {
             'senderId': 1,
             'senderName': '87009768237',
             'content': 'СОС хелп',
+            'recipientId': 1,
+            'recipientName': '87009768237'
         })
     });
 }

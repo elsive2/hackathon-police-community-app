@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class ChatMessageRequest {
-    private String id;
     private String chatId;
     private Long senderId;
     private Long recipientId;

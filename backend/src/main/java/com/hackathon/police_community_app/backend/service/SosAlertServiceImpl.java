@@ -6,7 +6,7 @@ import com.hackathon.police_community_app.backend.dto.response.SosAlertResponse;
 import com.hackathon.police_community_app.backend.entity.SosAlert;
 import com.hackathon.police_community_app.backend.entity.User;
 import com.hackathon.police_community_app.backend.enums.Status;
-import com.hackathon.police_community_app.backend.exception.SosAlertIsOccupiedException;
+import com.hackathon.police_community_app.backend.exception.RecordIsOccupiedException;
 import com.hackathon.police_community_app.backend.exception.StatusWrongException;
 import com.hackathon.police_community_app.backend.mapper.SosAlertMapper;
 import com.hackathon.police_community_app.backend.repository.SosAlertRepository;
@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,7 +61,8 @@ public class SosAlertServiceImpl implements SosAlertService {
         sosAlert.setLatitude(request.getLatitude())
                 .setLongitude(request.getLongitude())
                 .setPhoneNumber(phone)
-                .setStatus(Status.NEW);
+                .setStatus(Status.NEW)
+                .setComment(request.getComment());
 
         sosAlert = sosAlertRepository.save(sosAlert);
 
@@ -74,7 +74,8 @@ public class SosAlertServiceImpl implements SosAlertService {
         SosAlert sosAlert = sosAlertRepository.findByIdRequired(id);
 
         sosAlert.setLatitude(request.getLatitude())
-                .setLongitude(request.getLongitude());
+                .setLongitude(request.getLongitude())
+                .setComment(request.getComment());
 
         return mapper.toResponse(sosAlert);
     }
@@ -116,7 +117,7 @@ public class SosAlertServiceImpl implements SosAlertService {
         }
 
         if (Objects.nonNull(sosAlert.getResponsible())) {
-            throw new SosAlertIsOccupiedException();
+            throw new RecordIsOccupiedException();
         }
 
         sosAlert.setResponsible(user)
