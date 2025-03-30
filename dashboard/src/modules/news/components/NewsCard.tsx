@@ -36,9 +36,10 @@ const NewsCard: React.FC<NewsCardProps> = ({
             alignItems: "center",
             justifyContent: "space-between",
           }}
+          component="div"
           gutterBottom
         >
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography gutterBottom variant="h6">
             {title}
           </Typography>
           <Typography
