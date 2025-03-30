@@ -2,7 +2,6 @@
 
 import { SOSInterface } from "@/modules/sos/interfaces";
 import { useEffect, useState } from "react";
-import { sosData } from "@/modules/sos/mock";
 import SosTable from "@/modules/sos/components/SosTable";
 import SkeletonTable from "@/modules/sos/components/SkeletonTable";
 import { getSosAlerts } from "@/modules/sos/api";
