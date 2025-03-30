@@ -1,13 +1,16 @@
 export enum SosStatusEnum {
-  new,
-  inProgress,
-  completed,
+  inProgress = "IN_PROGRESS",
+  completed = "COMPLETED",
+  new = "NEW",
+  rejected = "REJECTED",
 }
 
 export interface SOSInterface {
   id: number;
   location: string;
-  phone: string;
-  date: string;
+  phoneNumber: string;
+  createDate: string;
+  comment: string,
+  address: string,
   status: SosStatusEnum;
 }
