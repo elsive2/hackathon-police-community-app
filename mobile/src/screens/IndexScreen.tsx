@@ -4,12 +4,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BottomNavigation, Text } from "react-native-paper";
 import NewsTab from "../tabs/News";
 import SosTab from "../tabs/Sos";
-
-const SosRoute = () => <Text>Sos</Text>;
+import ApplicationsTab from "../tabs/Applications";
 
 const ChatRoute = () => <Text>Chat</Text>;
-
-const ApplicationsRoute = () => <Text>Notifications</Text>;
 
 const IndexScreen = () => {
   const navigation = useNavigation();
@@ -70,7 +67,7 @@ const IndexScreen = () => {
     news: NewsTab,
     sos: SosTab,
     chat: ChatRoute,
-    application: ApplicationsRoute,
+    application: ApplicationsTab,
   });
 
   return (

@@ -7,6 +7,7 @@ import { Italic } from "@tiptap/extension-italic";
 import { Strike } from "@tiptap/extension-strike";
 import { Underline } from "@tiptap/extension-underline";
 import { Paragraph } from "@tiptap/extension-paragraph";
+import Image from "@tiptap/extension-image";
 
 export const getExtensions = () => {
   return [
@@ -48,5 +49,6 @@ export const getExtensions = () => {
     Underline,
     Document,
     Paragraph,
+    Image,
   ] as Extensions;
 };
