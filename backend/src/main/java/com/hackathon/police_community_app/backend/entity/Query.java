@@ -5,6 +5,9 @@ import com.hackathon.police_community_app.backend.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table
 @Data
@@ -17,11 +20,15 @@ public class Query extends BaseEntity {
     @JoinColumn(nullable = false)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "responsible_id", nullable = true)
+    private User responsible;
+
     @Column(nullable = false, length = 500)
     private String content;
 
-    @Column
-    private String mediaUrl;
+    @OneToMany(mappedBy = "query", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QueryPhoto> photos = new ArrayList<>();
 
     @Column
     private Double latitude;

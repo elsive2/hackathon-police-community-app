@@ -1,21 +1,21 @@
 package com.hackathon.police_community_app.backend.service;
 
 import com.hackathon.police_community_app.backend.dto.ChatNotificationDto;
-import com.hackathon.police_community_app.backend.dto.response.SingleMessageResponse;
 import com.hackathon.police_community_app.backend.entity.ChatMessage;
 import com.hackathon.police_community_app.backend.entity.ChatRoom;
 import com.hackathon.police_community_app.backend.entity.User;
 import com.hackathon.police_community_app.backend.enums.MessageStatus;
+import com.hackathon.police_community_app.backend.mapper.ChatMessageMapper;
 import com.hackathon.police_community_app.backend.repository.ChatMessageRepository;
 import com.hackathon.police_community_app.backend.repository.ChatRoomRepository;
 import com.hackathon.police_community_app.backend.repository.UserRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Transactional
@@ -26,6 +26,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     private final UserRepository userRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final ChatMessageMapper chatMessageMapper;
 
     @Override
     public ChatRoom getChatOrCreateAnonymous(Long senderId, Long recipientId, User sender, User recipient) {
@@ -44,8 +45,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    @SendTo("/topic/messages")
-    public SingleMessageResponse assignUser(@NotNull Long userId, @NotNull Long chatRoomId) {
+    public void assignUser(@NotNull Long userId, @NotNull Long chatRoomId) {
         User user = userRepository.findByIdRequired(userId);
         ChatRoom chatRoom = chatRoomRepository.findByIdRequired(chatRoomId);
 
@@ -61,27 +61,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
         chatMessageRepository.save(systemMessage);
 
-        simpMessagingTemplate.convertAndSendToUser(
-                chatRoom.getSender().getId().toString(),
-                "/topic/messages",
-                new ChatNotificationDto(
-                        systemMessage.getId(),
-                        user.getId(),
-                        user.getUsername()
-                )
-        );
-
-        return new SingleMessageResponse("sd");
-
-//        simpMessagingTemplate.convertAndSendToUser(
-//                user.getId().toString(),
-//                "/queue/notifications",
-//                new ChatNotificationDto(
-//                        systemMessage.getId(),
-//                        user.getId(),
-//                        user.getUsername(),
-//                        "Вы назначены ответственным"
-//                )
-//        );
+        if (Objects.nonNull(chatRoom.getSender())) {
+            simpMessagingTemplate.convertAndSend(
+                    "/queue/messages/" + chatRoom.getSender().getId(),
+                    chatMessageMapper.toResponse(systemMessage)
+            );
+        }
     }
 }

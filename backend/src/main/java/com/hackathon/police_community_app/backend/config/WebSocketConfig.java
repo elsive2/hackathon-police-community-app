@@ -29,18 +29,13 @@ import java.util.Map;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
+        config.enableSimpleBroker("/topic", "/queue");
         config.setApplicationDestinationPrefixes("/app");
-//        config.setUserDestinationPrefix("/user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry
-                .addEndpoint("/ws");
-//                .setHandshakeHandler(new MyHandshakeHandler())
-//                .setAllowedOriginPatterns("*")
-//                .withSockJS();
+        registry.addEndpoint("/ws");
     }
 
     @Override
@@ -54,16 +49,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         return false;
     }
 
-    public static class MyHandshakeHandler extends DefaultHandshakeHandler {
-
-        @Override
-        protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler,
-                                          Map<String, Object> attributes) {
-            System.out.println("Handshake request: " + request.getURI());
-            return super.determineUser(request, wsHandler, attributes);
-
-        }
-
-
-    }
+//    @Bean
+//    public AuthorizationManager<Message<?>> messageAuthorizationManager(
+//            MessageMatcherDelegatingAuthorizationManager.Builder messages) {
+//        messages
+//                .simpDestMatchers("/user/**").authenticated() // Требуем авторизацию для индивидуальных сообщений
+//                .simpSubscribeDestMatchers("/user/**", "/queue/**").authenticated() // Требуем авторизацию для подписки
+//                .simpDestMatchers("/app/**").authenticated() // Требуем авторизацию для отправки
+//                .anyMessage().permitAll(); // Разрешаем остальное
+//        return messages.build();
+//    }
 }
