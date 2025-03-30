@@ -11,22 +11,16 @@ const SosPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-      try {
-        setLoading(true);
-        getSosAlerts()
-          .then((response) => {
-            setData(response.data.content as SOSInterface[]);
-          })
-          .finally(() => setLoading(false));
-      } catch (e) {
-        console.error(e);
-      }
-    }, []);
-
-  useEffect(() => {
-    getSosAlerts().then((res) => {
-      console.log(res);
-    });
+    try {
+      setLoading(true);
+      getSosAlerts()
+        .then((response) => {
+          setData(response.data.content as SOSInterface[]);
+        })
+        .finally(() => setLoading(false));
+    } catch (e) {
+      console.error(e);
+    }
   }, []);
 
   if (loading) return <SkeletonTable />;
