@@ -1,13 +1,16 @@
 import { StyleSheet, View } from "react-native";
 import { Button, Divider, Text, TextInput } from "react-native-paper";
 import { useState } from "react";
-import { AuthForm, AuthFormState } from "../modules/auth/interface";
+import { AuthForm, AuthFormState } from "../modules/auth/interfaces";
 import { requestCode, verifyCode } from "../modules/auth/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions, useNavigation } from "@react-navigation/native";
+import ConfirmationDialog from "../modules/sos/components/ConfirmationDialog";
 
 const AuthScreen = () => {
   const navigation = useNavigation();
+
+  const [showDialog, setShowDialog] = useState(false);
 
   const [formState, setFormState] = useState<AuthForm>({
     phone: "",
@@ -40,44 +43,54 @@ const AuthScreen = () => {
   };
 
   const onPressSOSButton = () => {
-    console.log("sos");
+    setShowDialog(true);
   };
 
   return (
-    <View style={styles.card}>
-      <Text style={styles.header}>Введите номер</Text>
-      <TextInput
-        label={"Номер телефона"}
-        value={formState.phone}
-        onChangeText={(text) =>
-          setFormState((prevState) => ({ ...prevState, phone: text }))
-        }
-      />
-      {formState.state === AuthFormState.VerifyCode && (
+    <>
+      <View style={styles.card}>
+        <Text style={styles.header}>Введите номер</Text>
         <TextInput
-          label={"Одноразовый код"}
-          value={formState.code}
+          label={"Номер телефона"}
+          value={formState.phone}
           onChangeText={(text) =>
-            setFormState((prevState) => ({ ...prevState, code: text }))
+            setFormState((prevState) => ({ ...prevState, phone: text }))
           }
         />
-      )}
-      <Button onPress={onPressButton} mode={"contained"} style={styles.button}>
-        {formState.state === AuthFormState.RequestCode
-          ? "Запросить код"
-          : "Подтвердить код"}
-      </Button>
-      <Divider />
-      <Button
-        buttonColor={"red"}
-        onPress={onPressSOSButton}
-        textColor={"#fff"}
-        style={styles.buttonSOS}
-        mode={"contained-tonal"}
-      >
-        SOS
-      </Button>
-    </View>
+        {formState.state === AuthFormState.VerifyCode && (
+          <TextInput
+            label={"Одноразовый код"}
+            value={formState.code}
+            onChangeText={(text) =>
+              setFormState((prevState) => ({ ...prevState, code: text }))
+            }
+          />
+        )}
+        <Button
+          onPress={onPressButton}
+          mode={"contained"}
+          style={styles.button}
+        >
+          {formState.state === AuthFormState.RequestCode
+            ? "Запросить код"
+            : "Подтвердить код"}
+        </Button>
+        <Divider />
+        <Button
+          buttonColor={"red"}
+          onPress={onPressSOSButton}
+          textColor={"#fff"}
+          style={styles.buttonSOS}
+          mode={"contained-tonal"}
+        >
+          SOS
+        </Button>
+      </View>
+      <ConfirmationDialog
+        visible={showDialog}
+        hideDialog={() => setShowDialog(false)}
+      />
+    </>
   );
 };
 

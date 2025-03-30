@@ -22,7 +22,9 @@
     "react-native": "0.76.7",
     "react-native-paper": "^5.13.1",
     "react-native-render-html": "^6.3.4",
-    "react-native-web": "~0.19.13"
+    "react-native-web": "~0.19.13",
+    "expo-location": "~18.0.8",
+    "expo-notifications": "~0.29.14"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
