@@ -10,6 +10,7 @@ import com.hackathon.police_community_app.backend.exception.RefreshTokenExpiredE
 import com.hackathon.police_community_app.backend.repository.RefreshTokenRepository;
 import com.hackathon.police_community_app.backend.repository.SmsCodeRepository;
 import com.hackathon.police_community_app.backend.repository.UserRepository;
+import com.hackathon.police_community_app.backend.service.sms_provider.SmsProvider;
 import com.hackathon.police_community_app.backend.util.JwtUtil;
 import com.hackathon.police_community_app.backend.util.StringUtil;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Random;
 
 @Transactional
 @Service
@@ -30,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final SmsCodeRepository smsCodeRepository;
 
-    private final SmsService smsService;
+    private final SmsProvider smsProvider;
 
     private final JwtUtil jwtUtil;
 
@@ -59,9 +61,8 @@ public class AuthServiceImpl implements AuthService {
         } else {
             smsCode.get().setExpiresAt(LocalDateTime.now().plusMinutes(5));
         }
-        // @TODO: Отправку СМС
         // @TODO: Ограничение СМС если много
-//        smsService.sendSms(phoneNumber, code);
+//        smsProvider.sendSms(phoneNumber, code);
     }
 
     public TokenResponse verifyCode(String phoneNumber, String code) {
