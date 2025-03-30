@@ -7,6 +7,7 @@ import java.util.List;
 @Data
 public class QueryRequest {
     private String content;
+    private String title;
     private List<String> photos;
     private Double latitude;
     private Double longitude;
