@@ -9,6 +9,7 @@ import com.hackathon.police_community_app.backend.service.SosAlertService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +55,10 @@ public class SosAlertController {
     @RateLimiter(name = "myService")
     @Operation(summary = "Сохранение SOS-алерта")
     @PostMapping
-    public ResponseEntity<SosAlertResponse> createSosAlert(@RequestBody SosAlertRequest request, Principal principal) {
+    public ResponseEntity<SosAlertResponse> createSosAlert(
+            @RequestBody @Valid SosAlertRequest request,
+            Principal principal
+    ) {
         SmsCodeAuthenticationToken authentication = (SmsCodeAuthenticationToken) principal;
         String phone = Objects.isNull(authentication) ? null : authentication.getPhoneNumber();
 
@@ -68,7 +72,7 @@ public class SosAlertController {
     @PreAuthorize("hasRole('POLICE') || hasRole('ADMIN')")
     public SosAlertResponse update(
             @PathVariable Long id,
-            @RequestBody SosAlertRequest request) {
+            @RequestBody @Valid SosAlertRequest request) {
         // @TODO: Сделать чтобы был ответсвенный пользователь
         return service.update(id, request);
     }
